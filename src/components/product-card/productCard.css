@@ -97,3 +97,9 @@
     transform: translateY(-5rem);
   }
 }
+
+@media (max-width: 768px) {
+  .product-card:hover img {
+    scale: 1;
+  }
+}

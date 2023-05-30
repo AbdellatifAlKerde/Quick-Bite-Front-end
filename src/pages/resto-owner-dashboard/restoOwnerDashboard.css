@@ -23,3 +23,9 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@media (max-width: 767px) {
+  .owner-dashboard-pages {
+    width: 84%;
+  }
+}

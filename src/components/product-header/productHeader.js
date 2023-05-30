@@ -159,21 +159,28 @@ function ProductHeader() {
           {isAuthenticated ? (
             <div
               className="header-user-profile"
-              onClick={() => navigate("/user-profile")}
               style={{
                 display: "flex",
                 alignItems: "center",
                 gap: "1rem",
               }}
             >
-              <div style={{ width: "48px" }}>
-                <img src={profileImage} alt="Profile image" />
+              <div onClick={() => navigate("/user-profile")}>
+                <div style={{ width: "48px" }}>
+                  <img src={profileImage} alt="Profile image" />
+                </div>
+                <span style={{ fontSize: "1.2rem", textAlign: "start" }}>
+                  {user && user.username}
+                  <br></br>
+                  {user && user.email}
+                </span>
               </div>
-              <span style={{ fontSize: "1.2rem", textAlign: "start" }}>
-                {user && user.username}
-                <br></br>
-                {user && user.email}
-              </span>
+              <div
+                style={{ color: "var(--accent-color)" }}
+                onClick={() => logout()}
+              >
+                <LogoutRoundedIcon />
+              </div>
             </div>
           ) : (
             <Link to="/user-login">

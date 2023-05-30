@@ -32,8 +32,6 @@ function OwnerDashboardOrders() {
     }
   }, [restaurant, orders]);
 
-  console.log(restoOrders);
-
   const columns = [
     { field: "_id", headerName: "ID", width: 220 },
     {

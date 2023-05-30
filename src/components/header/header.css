@@ -79,7 +79,7 @@
 
 .mobile-navigation-dopdown-overlay {
   position: fixed;
-  top: 96px;
+  top: 92px;
   right: 0;
   width: 100%;
   background-color: #00000074;
@@ -173,4 +173,14 @@
 
 .header-user-prfile-dropdown a:hover {
   background-color: var(--secondary-color);
+}
+
+.header-user-profile {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-user-profile div:nth-child(1) {
+  display: flex;
+  gap: 0.5rem;
 }

@@ -102,12 +102,14 @@
 .home-page-products-title {
   font-size: 2.5rem;
   text-align: center;
+  padding-inline: 2rem;
 }
 
 .home-page-products-show-more {
   display: flex;
   justify-content: flex-end;
   padding-inline: 10%;
+  margin-top: 2rem;
 }
 
 .home-page-products-show-more a {
@@ -138,7 +140,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 2rem;
-  margin-top: 3rem;
+  margin-top: 1rem;
   padding-inline: 10%;
 }
 
@@ -155,14 +157,14 @@
 
 @media (max-width: 768px) {
   .home-page-hero-section {
-    padding-inline: 1rem;
+    padding-inline: 2rem;
   }
 
   .home-page-service-section .cards {
-    padding-inline: 1rem;
+    padding-inline: 2rem;
   }
 
   .home-page-products-cards {
-    padding-inline: 1rem;
+    padding-inline: 2rem;
   }
 }

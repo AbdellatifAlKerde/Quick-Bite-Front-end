@@ -55,3 +55,9 @@
     width: 100%;
   }
 }
+
+@media (max-width: 480px) {
+  .owner-register-container {
+    padding-inline: 2rem;
+  }
+}

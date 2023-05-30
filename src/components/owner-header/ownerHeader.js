@@ -5,6 +5,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import MainButton from "../main-button/MainButton";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 function OwnerHeader() {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ function OwnerHeader() {
             }}
           >
             <span style={{ marginLeft: ".5rem" }}>
-              <PersonRoundedIcon />
+              <LogoutRoundedIcon />
             </span>
           </MainButton>
         ) : (

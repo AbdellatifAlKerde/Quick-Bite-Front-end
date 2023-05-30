@@ -449,13 +449,14 @@ function OwnerDashboardProducts() {
                               category: { _id: e.target.value },
                             })
                     }
-                    defaultValue={editId.category._id}
+                    defaultValue={editId && editId.category._id}
                   >
-                    {categories.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
-                      </option>
-                    ))}
+                    {categories &&
+                      categories.map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.name}
+                        </option>
+                      ))}
                   </select>
                 </label>
               </div>

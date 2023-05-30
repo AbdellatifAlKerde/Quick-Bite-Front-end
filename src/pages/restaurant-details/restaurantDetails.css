@@ -7,11 +7,12 @@
 }
 
 .restaurant-details-title h2 {
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 3vw, 3rem);
 }
 
 .restaurant-details-title div {
   font-size: 1.2rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
 .restaurant-details-cat-prod {
@@ -40,8 +41,6 @@
 }
 
 .restaurant-products-by-cat-cards {
-  /* display: flex;
-  flex-wrap: wrap; */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
   place-items: center;
@@ -59,6 +58,7 @@
   border-bottom: 2px solid #999;
   padding-bottom: 1rem;
 }
+
 .restaurant-categories-links {
   display: flex;
   flex-direction: column;
@@ -73,4 +73,48 @@
   justify-content: center;
   align-items: center;
   font-size: 1.6rem;
+}
+
+@media (max-width: 767px) {
+  .restaurant-details-page {
+    margin-top: 92px;
+  }
+
+  .restaurant-categories-links {
+    flex-direction: row;
+  }
+
+  .restaurant-categories {
+    width: 100%;
+  }
+
+  .restaurant-categories a {
+    background-color: var(--text-color-1);
+    color: var(--primary-color);
+    padding-inline: 1rem;
+    border-radius: var(--border-radius);
+    display: grid;
+    place-items: center;
+  }
+
+  .restaurant-products-by-cat-cards {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .restaurant-details-cat-prod {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .restaurant-products {
+    width: 100%;
+  }
+
+  .restaurant-products-by-cat-title {
+    position: sticky;
+    top: 92px;
+    background-color: var(--primary-color);
+    padding-top: 1rem;
+  }
 }

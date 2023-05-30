@@ -131,7 +131,7 @@ function OwnerRegister() {
                   required={true}
                 />
               </div>
-              <div>
+              <div className="owner-register-page-btn">
                 <MainButton
                   type="submit"
                   name={isLoading ? "" : "Submit"}
