@@ -1,0 +1,54 @@
+.owner-dashboard-products {
+  overflow-y: scroll;
+  height: 88vh;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.owner-dashboard-products::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.owner-dashboard-products {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.owner-dashboard-products-table-add-btn {
+  display: flex;
+  justify-content: flex-end;
+  margin-block: 1rem;
+  padding-inline: 1rem;
+}
+
+.owner-dashboard-products-table {
+  margin-top: 2rem;
+}
+
+.file-input__input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.file-input__label {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 12px;
+  background-color: var(--text-color-1);
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+}
+
+.file-input__label svg {
+  height: 16px;
+  margin-right: 4px;
+}

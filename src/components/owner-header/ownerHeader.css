@@ -1,0 +1,19 @@
+.owner-register-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 11%;
+  background-color: var(--text-color-1);
+  padding-block: 0.5rem;
+}
+
+.owner-register-header-logo {
+  width: 200px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .owner-register-header {
+    padding-inline: 1rem;
+  }
+}

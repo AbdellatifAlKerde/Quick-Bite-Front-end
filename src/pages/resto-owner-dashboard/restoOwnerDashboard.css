@@ -1,0 +1,25 @@
+.owner-dashboard {
+  overflow: hidden;
+}
+
+.owner-dashboard-container {
+  display: flex;
+  gap: 2rem;
+  position: relative;
+}
+
+.owner-dashboard-pages {
+  width: 92%;
+  margin-top: 1.5rem;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.owner-dashboard-pages::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.owner-dashboard-pages {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

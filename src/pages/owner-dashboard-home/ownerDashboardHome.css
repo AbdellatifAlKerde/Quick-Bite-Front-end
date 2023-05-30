@@ -1,0 +1,69 @@
+.owner-dashboard-home {
+  overflow-y: scroll;
+  height: 88vh;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.owner-dashboard-home::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.owner-dashboard-home {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.owner-dashboard-loading {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.owner-profile-title {
+  font-size: 2.5rem;
+  margin-top: 2rem;
+}
+
+.owner-dashboard-home-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.owner-profile-data {
+  width: 100%;
+  padding: 0;
+}
+
+.owner-profile-data h2 {
+  font-size: 2rem;
+}
+
+.owner-profile-data form:first-child,
+.owner-profile-data form:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-dashboard-upload-image {
+  flex-direction: row !important;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.description-textarea {
+  width: 100%;
+  border-radius: var(--border-radius-mini);
+  padding: 1rem;
+  border: none;
+  background-color: var(--secondary-color);
+  font-family: "Open Sans", sans-serif;
+  font-size: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .owner-dashboard-home-container {
+    flex-direction: column;
+  }
+}
