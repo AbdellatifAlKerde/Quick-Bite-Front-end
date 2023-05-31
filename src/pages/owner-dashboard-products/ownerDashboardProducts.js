@@ -57,10 +57,12 @@ function OwnerDashboardProducts() {
 
   const handleAddImageChange = (e) => {
     setProductAddData({ ...productAddData, image: e.target.files[0] });
+    console.log(productAddData.image);
   };
 
   const handleEditImageChange = (e) => {
     setProductEditData({ ...productEditData, image: e.target.files[0] });
+    // console.log(productEditData.image);
   };
 
   const triggerEdit = () => {
@@ -75,7 +77,10 @@ function OwnerDashboardProducts() {
     productAddForm.append("name", productAddData.name);
     productAddForm.append("description", productAddData.description);
     productAddForm.append("price", productAddData.price);
-    productAddForm.append("image", productAddData.image);
+    // productAddForm.append("image", productAddData.image);
+    if (productAddData.image) {
+      productAddForm.append("image", productAddData.image);
+    }
     productAddForm.append("category", productAddData.category._id);
     productAddForm.append("restaurant_id", restaurant._id);
 
@@ -92,22 +97,15 @@ function OwnerDashboardProducts() {
       console.log(response);
       setIsSubmitting(false);
       setOpenPopup(false);
-      // Swal.fire({
-      //   position: "top-end",
-      //   icon: "success",
-      //   title: "Product Added Successfully",
-      //   showConfirmButton: false,
-      //   timer: 1500,
-      // });
-      // setProductAddData({
-      //   fullName: "",
-      //   email: "",
-      //   password: "",
-      // });
-      setError(response.data.message);
+      setProductAddData({
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+        image: null,
+      });
+      setError("");
       fetchProducts();
-      // getProducts();
-      // getCategories();
     } catch (e) {
       console.log(e);
       setError(e.response.data);
@@ -123,7 +121,10 @@ function OwnerDashboardProducts() {
     productEditForm.append("name", productEditData.name);
     productEditForm.append("description", productEditData.description);
     productEditForm.append("price", productEditData.price);
+    // productEditForm.append("image", productEditData.image);
+    // if (productAddData.image) {
     productEditForm.append("image", productEditData.image);
+    // }
     productEditForm.append("category", productEditData.category._id);
     productEditForm.append("restaurant_id", restaurant._id);
 
@@ -141,21 +142,16 @@ function OwnerDashboardProducts() {
       console.log(response);
       setIsSubmitting(true);
       setOpenPopup(false);
-      // Swal.fire({
-      //   position: "top-end",
-      //   icon: "success",
-      //   title: "Product Updated Successfully",
-      //   showConfirmButton: false,
-      //   timer: 1500,
-      // });
-      // setProductEditData({
-      //   fullName: "",
-      //   email: "",
-      //   password: "",
-      // });
-      setError(response.data.message);
-      // getProducts();
-      // getCategories();
+      setIsEdit(false);
+      setProductEditData({
+        name: "",
+        description: "",
+        price: "",
+        category: "",
+        image: null,
+      });
+      setError("");
+      // setError(response.data.message);
     } catch (e) {
       console.log(e);
       console.log("working");
@@ -329,6 +325,7 @@ function OwnerDashboardProducts() {
 
   return (
     <div className="owner-dashboard-products">
+      {/* {console.log(productEditData.image)} */}
       <div className="owner-dashboard-products-container">
         <DashboardHero
           image={productHero}
@@ -433,8 +430,8 @@ function OwnerDashboardProducts() {
                     name="category"
                     value={
                       isEdit
-                        ? productEditData.category.name
-                        : productAddData.category.name
+                        ? productEditData.category._id
+                        : productAddData.category._id
                     } // or formData.category.name
                     onChange={
                       isEdit
@@ -499,7 +496,7 @@ function OwnerDashboardProducts() {
                 }}
               >
                 <MainButton
-                  name={isEdit ? "Edit" : "Add"}
+                  name={isEdit ? "Save" : "Add"}
                   style={{ width: "100%", background: "var(--text-color-1)" }}
                   type="submit"
                 >

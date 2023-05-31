@@ -76,42 +76,6 @@ function UserProfile() {
     }
   };
 
-  // const editAddress = async (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-
-  //   try {
-  //     const response = await axios.patch(
-  //       `${process.env.REACT_APP_API_URL}/api/user/address/${user._id}`,
-  //       { address: address }
-  //     );
-  //     updateUser(response.data.response);
-  //     setIsLoading(false);
-  //     setAddress("");
-  //   } catch (e) {
-  //     console.log(e);
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // const editPhone = async (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-
-  //   try {
-  //     const response = await axios.patch(
-  //       `${process.env.REACT_APP_API_URL}/api/user/phone/${user._id}`,
-  //       { phone: phone }
-  //     );
-  //     updateUser(response.data.response);
-  //     setIsLoading(false);
-  //     setPhone("");
-  //   } catch (e) {
-  //     console.log(e);
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const editEmail = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -222,7 +186,7 @@ function UserProfile() {
               <div>
                 <TextField
                   label="Password"
-                  type="text"
+                  type="password"
                   name="password"
                   onChange={handleUserChange}
                   placeholder="******"

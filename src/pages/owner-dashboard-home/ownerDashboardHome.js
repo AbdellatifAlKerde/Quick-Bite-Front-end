@@ -178,7 +178,7 @@ function OwnerDashboardHome() {
           <form onSubmit={editRestaurant}>
             <div>
               <TextField
-                label="Name"
+                label="Restaurant name"
                 type="text"
                 name="name"
                 onChange={handleRestoChange}
@@ -190,7 +190,7 @@ function OwnerDashboardHome() {
 
             <div>
               <label>
-                Description
+                About your restaurant
                 <textarea
                   className="description-textarea"
                   name="description"
@@ -206,7 +206,7 @@ function OwnerDashboardHome() {
 
             <div>
               <TextField
-                label="Location"
+                label="Restaurant location"
                 type="text"
                 name="location"
                 onChange={handleRestoChange}
@@ -219,7 +219,7 @@ function OwnerDashboardHome() {
             <MainButton
               type="submit"
               style={{ backgroundColor: "var(--text-color-1)" }}
-              name={isLoading ? "" : "Save"}
+              name={isLoading ? "Saving..." : "Save"}
               disabled={isLoading}
             ></MainButton>
           </form>
@@ -259,7 +259,7 @@ function OwnerDashboardHome() {
             <MainButton
               type="submit"
               style={{ backgroundColor: "var(--text-color-1)" }}
-              name={isLoading ? "" : "Save"}
+              name={isLoading ? "Saving..." : "Save"}
               disabled={isLoading}
             ></MainButton>
           </form>
@@ -296,7 +296,7 @@ function OwnerDashboardHome() {
             </div>
             <MainButton
               type="submit"
-              name={ownerIsLoading ? "" : "Save"}
+              name={ownerIsLoading ? "Saving..." : "Save"}
               disabled={ownerIsLoading}
               style={{ backgroundColor: "var(--text-color-1)" }}
             ></MainButton>

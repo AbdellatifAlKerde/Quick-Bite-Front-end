@@ -156,12 +156,28 @@ function ProductDataProvider({ children }) {
     updateLocalStorage([]);
   };
 
+  // const fetchProducts = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     let url = `${process.env.REACT_APP_API_URL}/api/product${
+  //       selectedCategory ? `/category/${selectedCategory}` : ""
+  //     }`;
+  //     const response = await axios.get(url);
+  //     setProducts(response.data.items);
+  //     setIsLoading(false);
+  //   } catch (e) {
+  //     console.log(e);
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
       let url = `${process.env.REACT_APP_API_URL}/api/product${
         selectedCategory ? `/category/${selectedCategory}` : ""
-      }`;
+      }?page=1&limit=100`;
+
       const response = await axios.get(url);
       setProducts(response.data.items);
       setIsLoading(false);
