@@ -9,6 +9,7 @@ import CartContainer from "../../components/cart-container/cartContainer";
 import ItemAddedNotification from "../../components/item-added-notification/itemAddedNotification";
 import ProductPopup from "../../components/product-popup/productPopup";
 import Footer from "../../components/footer/footer";
+import Spinner from "../../components/spinner/spinner";
 
 function RestaurantDetails() {
   const { id } = useParams();
@@ -62,7 +63,18 @@ function RestaurantDetails() {
   }, [id, products]);
 
   if (!restaurant) {
-    return <div>Loading...</div>;
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100dvh",
+          display: "grid",
+          placeItems: "center",
+        }}
+      >
+        <Spinner />
+      </div>
+    );
   }
 
   const close = () => {

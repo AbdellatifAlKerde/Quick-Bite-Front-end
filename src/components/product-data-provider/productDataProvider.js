@@ -235,7 +235,7 @@ function ProductDataProvider({ children }) {
     try {
       if (orders.length === 0) {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/order`
+          `${process.env.REACT_APP_API_URL}/api/order?page=1&limit=100`
         );
         setOrders(response.data.items);
       }

@@ -8,12 +8,14 @@ import card3 from "../../assets/images/Waiters-amico.svg";
 import CartContainer from "../../components/cart-container/cartContainer";
 import { ProductDataContext } from "../../components/product-data-provider/productDataProvider";
 import ProductCard from "../../components/product-card/productCard";
+import ProductCardSkeleton from "../../components/product-card-skeleton/productCardSkeleton";
 import ProductPopup from "../../components/product-popup/productPopup";
 import { Link, useNavigate } from "react-router-dom";
 
 function HomePage() {
   const navigate = useNavigate();
-  const { products, addToCartPopup } = useContext(ProductDataContext);
+  const { products, addToCartPopup, isLoading } =
+    useContext(ProductDataContext);
   const [countItems, setCountItems] = useState(1);
   const handleAddToCartPopup = (product) => {
     addToCartPopup(product, countItems);
@@ -115,20 +117,24 @@ function HomePage() {
           </Link>
         </div>
         <div className="home-page-products-cards">
-          {limitedProducts.map((product) => (
-            <ProductCard
-              key={product._id}
-              src={`${process.env.REACT_APP_API_URL}/${product.image}`}
-              alt={product.name}
-              title={product.name}
-              description={product.description}
-              price={product.price}
-              style={{ flex: "1 1 300px" }}
-              onClick={() => {
-                handleProductClick(product);
-              }}
-            />
-          ))}
+          {isLoading
+            ? Array.from({ length: 3 }).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))
+            : limitedProducts.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  src={`${process.env.REACT_APP_API_URL}/${product.image}`}
+                  alt={product.name}
+                  title={product.name}
+                  description={product.description}
+                  price={product.price}
+                  style={{ flex: "1 1 300px" }}
+                  onClick={() => {
+                    handleProductClick(product);
+                  }}
+                />
+              ))}
         </div>
       </section>
     </div>

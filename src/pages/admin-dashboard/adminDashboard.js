@@ -7,7 +7,7 @@ function AdminDashboard() {
   return (
     <div className="owner-dashboard">
       <div className="owner-dashboard-container">
-        <AdminDashboardSidebar />
+        <AdminDashboardSidebar style={{ height: "94vh" }} />
         <div className="owner-dashboard-pages">
           <Outlet />
         </div>

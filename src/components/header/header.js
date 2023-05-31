@@ -216,7 +216,12 @@ function Header(props) {
             style={{ justifyContent: "flex-start" }}
           >
             <ShoppingCartRoundedIcon style={{ transform: "scale(1.3)" }} />
-            <span style={{ fontSize: "1.2rem", marginLeft: "1rem" }}>
+            <span
+              style={{
+                fontSize: "1.2rem",
+                marginLeft: "1rem",
+              }}
+            >
               My Cart
             </span>
           </div>

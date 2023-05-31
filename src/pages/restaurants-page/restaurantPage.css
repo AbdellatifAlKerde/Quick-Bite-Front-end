@@ -39,4 +39,12 @@
   .restaurants-page {
     margin-top: 92px;
   }
+
+  .restaurants-page-cards-section {
+    padding-inline: var(--mobile-padding);
+  }
+
+  .restaurant-page-hero {
+    margin-inline: var(--mobile-padding);
+  }
 }

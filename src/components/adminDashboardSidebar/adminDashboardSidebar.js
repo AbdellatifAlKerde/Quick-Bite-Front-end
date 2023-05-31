@@ -27,7 +27,7 @@ function AdminDashboardSidebar() {
   };
 
   return (
-    <div className="sidebar close">
+    <div className="sidebar close" style={{ height: "96vh" }}>
       <div className="sidebar-admin-profile spacing">
         <p>
           <AccountRoundedIcon />

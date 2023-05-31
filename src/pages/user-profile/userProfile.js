@@ -30,8 +30,9 @@ function UserProfile() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const userId = user && user._id;
     const filteredOrders = orders.filter(
-      (order) => order.user[0]._id === user._id
+      (order) => order.user[0]._id === userId
     );
     if (filteredOrders.length > 0) {
       setUserOrders(filteredOrders);

@@ -66,6 +66,6 @@
   } */
 
   .main-footer {
-    padding-inline: 2rem;
+    padding-inline: var(--mobile-padding);
   }
 }
