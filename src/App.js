@@ -23,7 +23,6 @@ import UserPrivateRoutes from "./utils/userPrivateRoutes";
 import OwnerDashboardHome from "./pages/owner-dashboard-home/ownerDashboardHome";
 import OwnerDashboardProducts from "./pages/owner-dashboard-products/ownerDashboardProducts";
 import OwnerDashboardOrders from "./pages/owner-dashboard-orders/ownerDashboardOrders";
-import AdminDashboardHome from "./pages/admin-dashboard-home/adminDashboardHome";
 import ScrollToTop from "./components/scroll-to-top/scrollToTop";
 import AdminDashboardOwners from "./pages/admin-dashboard-owners/adminDashboardOwners";
 import AdminDashboardRestaurants from "./pages/admin-dashboard-restaurants/adminDashboardRestaurants";
@@ -80,8 +79,10 @@ function App() {
           </Route>
           <Route path="/" element={<PrivateRoutes />}>
             <Route path="/" element={<AdminDashboard />}>
-              <Route path="/admin-dashboard" element={<AdminDashboardHome />} />
-              <Route path="/admin-owners" element={<AdminDashboardOwners />} />
+              <Route
+                path="/admin-dashboard"
+                element={<AdminDashboardOwners />}
+              />
               <Route
                 path="/admin-restaurants"
                 element={<AdminDashboardRestaurants />}

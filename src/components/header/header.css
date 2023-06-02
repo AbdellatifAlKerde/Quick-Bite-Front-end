@@ -152,6 +152,7 @@
   border-radius: 10px;
   transform: translateY(20px);
   opacity: 0;
+  visibility: hidden;
   transition: 0.3s;
   z-index: 9;
 }
@@ -159,6 +160,7 @@
 .header-user-prfile-dropdown.close {
   opacity: 1;
   transform: translateY(0);
+  visibility: visible;
 }
 
 .header-user-prfile-dropdown a {

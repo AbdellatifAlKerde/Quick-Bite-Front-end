@@ -21,16 +21,15 @@ function OwnerDashboardOrders() {
   }, [restaurant, restaurants]);
 
   useEffect(() => {
-    if (restaurants._id) {
-      const filteredOrders = orders.filter((order) =>
-        order.products.some(
-          (product) => product._id.restaurant_id._id === restaurant._id
-        )
-      );
-      if (filteredOrders.length > 0) {
-        setRestoOrders(filteredOrders);
-      }
+    const filteredOrders = orders.filter((order) =>
+      order.products.some(
+        (product) => product._id.restaurant_id._id === restaurant._id
+      )
+    );
+    if (filteredOrders.length > 0) {
+      setRestoOrders(filteredOrders);
     }
+    console.log(filteredOrders);
   }, [restaurant, orders]);
 
   const columns = [

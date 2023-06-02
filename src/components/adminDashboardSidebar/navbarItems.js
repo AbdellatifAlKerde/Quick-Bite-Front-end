@@ -8,24 +8,18 @@ import RestaurantRoundedIcon from "@mui/icons-material/RestaurantRounded";
 export const mainNavbarItems = [
   {
     id: 0,
-    icon: <LeaderboardRoundedIcon />,
-    label: "Home",
+    icon: <AccountRoundedIcon />,
+    label: "Owners",
     route: "/admin-dashboard",
   },
   {
     id: 1,
-    icon: <AccountRoundedIcon />,
-    label: "Owners",
-    route: "/admin-owners",
-  },
-  {
-    id: 2,
     icon: <RestaurantRoundedIcon />,
     label: "Restaurants",
     route: "/admin-restaurants",
   },
   {
-    id: 3,
+    id: 2,
     icon: <CategoryRoundedIcon />,
     label: "Categories",
     route: "/admin-categories",

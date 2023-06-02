@@ -70,7 +70,7 @@ const OwnerDashboardSidebar = () => {
             className="sidebar-logout spacing hover"
             onClick={() => {
               Cookies.remove("admin-token");
-              Cookies.remove("isSuper");
+              Cookies.remove("isOwner");
               localStorage.setItem("owner", "");
             }}
           >

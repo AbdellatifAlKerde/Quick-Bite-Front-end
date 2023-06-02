@@ -70,7 +70,7 @@ function AdminDashboardSidebar() {
             onClick={() => {
               Cookies.remove("admin-token");
               Cookies.remove("isSuper");
-              localStorage.setItem("owner", "");
+              localStorage.setItem("admin", "");
             }}
           >
             <p>
