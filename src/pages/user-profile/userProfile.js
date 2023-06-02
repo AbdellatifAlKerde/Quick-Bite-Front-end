@@ -123,12 +123,14 @@ function UserProfile() {
       headerName: "Products",
       width: 400,
       renderCell: (params) => {
-        const products = params.row.products
+        const products = params.row.products;
+        console.log(products[0]._id.name);
+        const orderedProducts = products
           .map((product) => `${product._id.name}: ${product.quantity}`)
           .join(", ");
         return (
           <div style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word" }}>
-            {products}
+            {orderedProducts}
           </div>
         );
       },

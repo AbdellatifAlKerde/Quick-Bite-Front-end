@@ -88,7 +88,7 @@ function CartContainer() {
             <div className="cart-items">
               {cartItems.map((item) => (
                 <CartItemsCard
-                  src={`${process.env.REACT_APP_API_URL}/${item.image}`}
+                  src={item.image}
                   alt={item.name}
                   name={item.name}
                   price={item.price}

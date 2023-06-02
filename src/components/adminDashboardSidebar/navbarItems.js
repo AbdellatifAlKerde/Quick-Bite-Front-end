@@ -15,8 +15,8 @@ export const mainNavbarItems = [
   {
     id: 1,
     icon: <AccountRoundedIcon />,
-    label: "Users",
-    route: "/admin-users",
+    label: "Owners",
+    route: "/admin-owners",
   },
   {
     id: 2,

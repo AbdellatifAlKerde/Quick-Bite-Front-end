@@ -14,6 +14,7 @@ function ProductDataProvider({ children }) {
   const [user, setUser] = useState();
   const [admin, setAdmin] = useState([]);
   const [owner, setOwner] = useState([]);
+  const [owners, setOwners] = useState([]);
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -30,6 +31,7 @@ function ProductDataProvider({ children }) {
     fetchCategories();
     fetchRetaurants();
     fetchUsers();
+    fetchOwners();
 
     const storedCartItems = localStorage.getItem("cartItems");
     if (storedCartItems) {
@@ -308,21 +310,51 @@ function ProductDataProvider({ children }) {
     });
   };
 
-  // const loggedInUserId = Cookies.get("user-id");
+  const fetchOwners = async () => {
+    setIsLoading(true);
+    try {
+      const token = Cookies.get("admin-token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/admin?page=1&limit=100`,
+        config
+      );
+      setOwners(response.data.items);
+      setIsLoading(false);
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+    }
+  };
 
-  // const fetchUser = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await axios.get(
-  //       `${process.env.REACT_APP_API_URL}/api/user/${loggedInUserId}`
-  //     );
-  //     setUser(response.data.user);
-  //     setIsLoading(false);
-  //   } catch (e) {
-  //     console.log(e);
-  //     setIsLoading(false);
-  //   }
-  // };
+  const deleteOwner = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "var(--secondary-color)",
+      cancelButtonColor: "var(--accent-color)",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios
+            .delete(`${process.env.REACT_APP_API_URL}/api/admin/${id}`)
+            .then((response) => {
+              fetchOwners();
+            });
+        } catch (error) {
+          console.log(error);
+        }
+        Swal.fire("Deleted!", "Owner has been deleted.", "success");
+      }
+    });
+  };
 
   const fetchOrders = async () => {
     try {
@@ -365,6 +397,8 @@ function ProductDataProvider({ children }) {
         admin,
         updateAdmin,
         owner,
+        owners,
+        deleteOwner,
         updateOwner,
         orders,
         fetchOrders,

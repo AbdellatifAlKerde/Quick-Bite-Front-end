@@ -25,7 +25,7 @@ import OwnerDashboardProducts from "./pages/owner-dashboard-products/ownerDashbo
 import OwnerDashboardOrders from "./pages/owner-dashboard-orders/ownerDashboardOrders";
 import AdminDashboardHome from "./pages/admin-dashboard-home/adminDashboardHome";
 import ScrollToTop from "./components/scroll-to-top/scrollToTop";
-import AdminDashboardUsers from "./pages/admin-dashboard-users/adminDashboardUsers";
+import AdminDashboardOwners from "./pages/admin-dashboard-owners/adminDashboardOwners";
 import AdminDashboardRestaurants from "./pages/admin-dashboard-restaurants/adminDashboardRestaurants";
 import AdminDashboardCategories from "./pages/admin-dashboard-categories/adminDashboardCategories";
 
@@ -81,7 +81,7 @@ function App() {
           <Route path="/" element={<PrivateRoutes />}>
             <Route path="/" element={<AdminDashboard />}>
               <Route path="/admin-dashboard" element={<AdminDashboardHome />} />
-              <Route path="/admin-users" element={<AdminDashboardUsers />} />
+              <Route path="/admin-owners" element={<AdminDashboardOwners />} />
               <Route
                 path="/admin-restaurants"
                 element={<AdminDashboardRestaurants />}

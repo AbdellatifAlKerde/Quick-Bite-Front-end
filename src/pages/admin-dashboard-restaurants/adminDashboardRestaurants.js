@@ -43,6 +43,12 @@ function AdminDashboardRestaurants() {
       width: 220,
     },
     {
+      field: "admin",
+      headerName: "Owner",
+      width: 220,
+      renderCell: (params) => <div>{params.row.admin.username}</div>,
+    },
+    {
       field: "description",
       headerName: "Description",
       width: 220,

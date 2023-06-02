@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import "./adminDashboardUsers.css";
+import React, { useContext, useEffect, useState } from "react";
+import "./adminDashboardOwners.css";
 import { ProductDataContext } from "../../components/product-data-provider/productDataProvider";
 import DashboardHero from "../../components/dashboard-hero/dashboardHero";
 import usersImage from "../../assets/images/admin-dashboard-users.webp";
@@ -7,30 +7,23 @@ import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-function AdminDashboardUsers() {
-  const { users, deleteUser } = useContext(ProductDataContext);
+function AdminDashboardOwners() {
+  const { owners, restaurants, deleteOwner } = useContext(ProductDataContext);
 
   const columns = [
-    { field: "_id", headerName: "ID", width: 220 },
+    { field: "_id", headerName: "ID", width: 280 },
     {
       field: "username",
       headerName: "Username",
       width: 220,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "isSuper",
+      headerName: "Role",
       width: 220,
-    },
-    {
-      field: "phone",
-      headerName: "Phone",
-      width: 220,
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      width: 220,
+      renderCell: (params) => (
+        <div>{params.row.isSuper ? "Admin" : "Owner"}</div>
+      ),
     },
     {
       field: "actions",
@@ -42,7 +35,7 @@ function AdminDashboardUsers() {
           <IconButton
             color="secondary"
             aria-label="delete"
-            onClick={() => deleteUser(params.id)}
+            onClick={() => deleteOwner(params.id)}
           >
             <DeleteIcon style={{ color: "var(--accent-color)" }} />
           </IconButton>
@@ -55,16 +48,16 @@ function AdminDashboardUsers() {
     return row._id;
   };
   return (
-    <div className="admin-dashboard-users">
+    <div className="admiownersn-dashboard-users">
       <DashboardHero
         image={usersImage}
-        alt="Users dashboard image"
-        title="Users"
+        alt="Owners dashboard image"
+        title="Owners"
       />
       <div className="owner-dashboard-orders-table">
         <DataGrid
           sx={{ width: "100%", height: "58vh", fontSize: "1.2rem" }}
-          rows={users}
+          rows={owners}
           columns={columns}
           initialState={{
             pagination: {
@@ -82,4 +75,4 @@ function AdminDashboardUsers() {
   );
 }
 
-export default AdminDashboardUsers;
+export default AdminDashboardOwners;
