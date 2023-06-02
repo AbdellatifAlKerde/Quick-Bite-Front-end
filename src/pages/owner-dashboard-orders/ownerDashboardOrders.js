@@ -4,9 +4,17 @@ import DashboardHero from "../../components/dashboard-hero/dashboardHero";
 import ordersImage from "../../assets/images/dashboard-hero-orders.jpg";
 import { ProductDataContext } from "../../components/product-data-provider/productDataProvider";
 import { DataGrid } from "@mui/x-data-grid";
+import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import axios from "axios";
+import Tooltip from "@mui/material/Tooltip";
+import UndoRoundedIcon from "@mui/icons-material/UndoRounded";
+import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
+import { IconButton } from "@mui/material";
 
 function OwnerDashboardOrders() {
-  const { orders, restaurants, owner } = useContext(ProductDataContext);
+  const { orders, restaurants, owner, fetchOrders } =
+    useContext(ProductDataContext);
   const [restaurant, setRestaurant] = useState({});
   const [restoOrders, setRestoOrders] = useState({});
 
@@ -31,6 +39,36 @@ function OwnerDashboardOrders() {
     }
     console.log(filteredOrders);
   }, [restaurant, orders]);
+
+  const handleRefetch = () => {
+    fetchOrders();
+  };
+
+  const approveOrder = async (id) => {
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/order/status/${id}`,
+        { status: "delivered" }
+      );
+      console.log(response);
+      handleRefetch();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const undoApproveOrder = async (id) => {
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/order/status/${id}`,
+        { status: "pending" }
+      );
+      console.log(response);
+      handleRefetch();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const columns = [
     { field: "_id", headerName: "ID", width: 220 },
@@ -61,34 +99,83 @@ function OwnerDashboardOrders() {
     {
       field: "products",
       headerName: "Name",
-      width: 220,
-      valueGetter: (params) => {
-        return params.row.products
-          .map((prod) => prod._id.name + " x " + prod.quantity)
-          .join(" | ");
-      },
+      width: 300,
+      // valueGetter: (params) => {
+      //   return params.row.products
+      //     .map(
+      //       (prod) =>
+      //         prod._id.name + " x " + prod.quantity + ` (${prod.status})`
+      //     )
+      //     .join(" | ");
+      // },
 
       renderCell: (params) => {
-        const productData = params.row.products
-          .map((prod) => prod._id.name + " x " + prod.quantity)
-          .join(" | ");
-
-        return (
-          <div
-            style={{
-              overflow: "scroll",
-            }}
-          >
-            {productData}
-          </div>
-        );
+        const productData = params.row.products.map((prod) => {
+          return (
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+            >
+              <span>
+                {prod._id.name} x {prod.quantity}{" "}
+              </span>
+              <span style={{ display: "inline-flex", alignItems: "center" }}>
+                (
+                {prod.status === "pending" ? (
+                  <AccessAlarmRoundedIcon style={{ color: "#ffb703" }} />
+                ) : (
+                  <CheckCircleOutlineRoundedIcon style={{ color: "green" }} />
+                )}
+                )<span style={{ marginInline: "6px" }}>| </span>
+              </span>
+            </span>
+          );
+        });
+        return <span style={{ overflowX: "scroll" }}>{productData}</span>;
       },
     },
-
     {
       field: "total",
       headerName: "Total ($)",
-      width: 80,
+      width: 160,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 200,
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            {params.row.products[0].status === "pending" ? (
+              <IconButton
+                color="secondary"
+                aria-label="delete"
+                onClick={() => approveOrder(params.id)}
+              >
+                <Tooltip title="approve" placement="top">
+                  <DoneRoundedIcon style={{ color: "green" }} />
+                </Tooltip>
+              </IconButton>
+            ) : (
+              <IconButton
+                color="secondary"
+                aria-label="delete"
+                onClick={() => undoApproveOrder(params.id)}
+              >
+                <Tooltip title="undo" placement="top">
+                  <UndoRoundedIcon style={{ color: "#222" }} />
+                </Tooltip>
+              </IconButton>
+            )}
+          </>
+        );
+        //   const productData = params.row.map((prod) => {
+        //   // return productData;
+        // },
+      },
     },
   ];
 

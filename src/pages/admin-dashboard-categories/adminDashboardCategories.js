@@ -88,6 +88,7 @@ function AdminDashboardCategories() {
       console.log(response);
       setIsSubmitting(false);
       setOpenPopup(false);
+      handleFetchCategories();
     } catch (error) {
       console.error(
         "Error uploading image to ImgBB and saving to the database:",

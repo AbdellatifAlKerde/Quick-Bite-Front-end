@@ -191,6 +191,14 @@ function ProductDataProvider({ children }) {
     }
   };
 
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetchProducts();
+  //   }, 5000); // Polling interval of 5 seconds
+
+  //   return () => clearInterval(interval); // Clean up the interval on component unmount
+  // }, []);
+
   useEffect(() => {
     fetchProducts();
   }, [selectedCategory]);
@@ -215,10 +223,6 @@ function ProductDataProvider({ children }) {
       console.log(e);
       setIsLoading(false);
     }
-  };
-
-  const handleCategoryFetch = () => {
-    fetchCategories();
   };
 
   const fetchRetaurants = async () => {
@@ -337,8 +341,8 @@ function ProductDataProvider({ children }) {
       text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "var(--secondary-color)",
-      cancelButtonColor: "var(--accent-color)",
+      confirmButtonColor: "var(--accent-color)",
+      cancelButtonColor: "var(--text-color-1)",
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -379,7 +383,7 @@ function ProductDataProvider({ children }) {
         handleRestaurantClick,
         selectedRestaurant,
         categories,
-        handleCategoryFetch,
+        fetchCategories,
         restaurants,
         deleteRestaurant,
         isLoading,
@@ -398,6 +402,7 @@ function ProductDataProvider({ children }) {
         updateAdmin,
         owner,
         owners,
+        fetchOwners,
         deleteOwner,
         updateOwner,
         orders,

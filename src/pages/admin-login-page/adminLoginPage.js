@@ -35,22 +35,27 @@ function AdminLoginPage() {
         adminForm
       );
       console.log(response);
-      if (response.status === 200) {
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        Cookies.set("admin-token", response.data.token, { expires: oneWeek });
-      }
-      if (response.data.isSuper) {
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        Cookies.set("isSuper", response.data.isSuper, { expires: oneWeek });
-        localStorage.setItem("admin", JSON.stringify(response.data));
-        navigate("/admin-dashboard");
+      if (response.data.isActive) {
+        if (response.status === 200) {
+          const oneWeek = 7 * 24 * 60 * 60 * 1000;
+          Cookies.set("admin-token", response.data.token, { expires: oneWeek });
+        }
+        if (response.data.isSuper) {
+          const oneWeek = 7 * 24 * 60 * 60 * 1000;
+          Cookies.set("isSuper", response.data.isSuper, { expires: oneWeek });
+          localStorage.setItem("admin", JSON.stringify(response.data));
+          navigate("/admin-dashboard");
+        } else {
+          const oneWeek = 7 * 24 * 60 * 60 * 1000;
+          Cookies.set("isOwner", response.data.isSuper, { expires: oneWeek });
+          localStorage.setItem("owner", JSON.stringify(response.data));
+          navigate("/owner-dashboard");
+        }
+        setIsLoading(false);
       } else {
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        Cookies.set("isOwner", response.data.isSuper, { expires: oneWeek });
-        localStorage.setItem("owner", JSON.stringify(response.data));
-        navigate("/owner-dashboard");
+        setIsLoading(false);
+        setError("Account is not active, please activate your account");
       }
-      setIsLoading(false);
     } catch (e) {
       console.log(e);
       setError(e.response.data.message);

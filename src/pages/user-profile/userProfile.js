@@ -10,6 +10,8 @@ import CartContainer from "../../components/cart-container/cartContainer";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/spinner/spinner";
+import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 
 function UserProfile() {
   const navigate = useNavigate();
@@ -122,17 +124,44 @@ function UserProfile() {
       field: "products",
       headerName: "Products",
       width: 400,
+      // renderCell: (params) => {
+      //   const products = params.row.products;
+      //   console.log(products[0]._id.name);
+      //   const orderedProducts = products
+      //     .map((product) => `${product._id.name}: ${product.quantity}`)
+      //     .join(", ");
+      //   return (
+      //     <div style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word" }}>
+      //       {orderedProducts}
+      //     </div>
+      //   );
+      // },
       renderCell: (params) => {
-        const products = params.row.products;
-        console.log(products[0]._id.name);
-        const orderedProducts = products
-          .map((product) => `${product._id.name}: ${product.quantity}`)
-          .join(", ");
-        return (
-          <div style={{ whiteSpace: "pre-wrap", overflowWrap: "break-word" }}>
-            {orderedProducts}
-          </div>
-        );
+        const productData = params.row.products.map((prod) => {
+          return (
+            <span
+              key={prod._id}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+            >
+              <span>
+                {prod._id.name} x {prod.quantity}{" "}
+              </span>
+              <span style={{ display: "inline-flex", alignItems: "center" }}>
+                (
+                {prod.status === "pending" ? (
+                  <AccessAlarmRoundedIcon style={{ color: "#ffb703" }} />
+                ) : (
+                  <CheckCircleOutlineRoundedIcon style={{ color: "green" }} />
+                )}
+                )<span style={{ marginInline: "6px" }}>| </span>
+              </span>
+            </span>
+          );
+        });
+        return <span style={{ overflowX: "scroll" }}>{productData}</span>;
       },
     },
     { field: "total", headerName: "Total ($)", width: 80 },
