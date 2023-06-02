@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState, useEffect, createContext } from "react";
-
+import Swal from "sweetalert2";
 // Create a new context for the product data
 const ProductDataContext = createContext();
 
@@ -10,6 +10,7 @@ function ProductDataProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [users, setUsers] = useState([]);
   const [user, setUser] = useState();
   const [admin, setAdmin] = useState([]);
   const [owner, setOwner] = useState([]);
@@ -28,6 +29,7 @@ function ProductDataProvider({ children }) {
     fetchProducts();
     fetchCategories();
     fetchRetaurants();
+    fetchUsers();
 
     const storedCartItems = localStorage.getItem("cartItems");
     if (storedCartItems) {
@@ -203,7 +205,7 @@ function ProductDataProvider({ children }) {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/category`
+        `${process.env.REACT_APP_API_URL}/api/category?page=1&limit=100`
       );
       setCategories(response.data.items);
       setIsLoading(false);
@@ -211,6 +213,10 @@ function ProductDataProvider({ children }) {
       console.log(e);
       setIsLoading(false);
     }
+  };
+
+  const handleCategoryFetch = () => {
+    fetchCategories();
   };
 
   const fetchRetaurants = async () => {
@@ -227,8 +233,79 @@ function ProductDataProvider({ children }) {
     }
   };
 
+  const deleteRestaurant = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "var(--secondary-color)",
+      cancelButtonColor: "var(--accent-color)",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios
+            .delete(`${process.env.REACT_APP_API_URL}/api/rest/${id}`)
+            .then((response) => {
+              fetchRetaurants();
+            });
+        } catch (error) {
+          console.log(error);
+        }
+        Swal.fire("Deleted!", "Restaurant has been deleted.", "success");
+      }
+    });
+  };
+
   const handleRestaurantClick = (filteredRestos) => {
     setRestaurants(filteredRestos);
+  };
+
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    try {
+      const token = Cookies.get("admin-token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/user?page=1&limit=100`,
+        config
+      );
+      setUsers(response.data.items);
+      setIsLoading(false);
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+    }
+  };
+
+  const deleteUser = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "var(--secondary-color)",
+      cancelButtonColor: "var(--accent-color)",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios
+            .delete(`${process.env.REACT_APP_API_URL}/api/user/${id}`)
+            .then((response) => {
+              fetchUsers();
+            });
+        } catch (error) {
+          console.log(error);
+        }
+        Swal.fire("Deleted!", "Your user has been deleted.", "success");
+      }
+    });
   };
 
   // const loggedInUserId = Cookies.get("user-id");
@@ -270,8 +347,9 @@ function ProductDataProvider({ children }) {
         handleRestaurantClick,
         selectedRestaurant,
         categories,
+        handleCategoryFetch,
         restaurants,
-        fetchRetaurants,
+        deleteRestaurant,
         isLoading,
         cartItems,
         addToCart,
@@ -280,8 +358,10 @@ function ProductDataProvider({ children }) {
         clearCart,
         totalPrice,
         editCartItemQuantity,
+        users,
         user,
         updateUser,
+        deleteUser,
         admin,
         updateAdmin,
         owner,

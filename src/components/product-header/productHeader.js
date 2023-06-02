@@ -121,6 +121,11 @@ function ProductHeader() {
         ) : (
           <Link to="/owner-register">
             <MainButton
+              style={{
+                backgroundColor: "var(--primary-color)",
+                color: "var(--accent-color)",
+                boxShadow: "none",
+              }}
               name="Become a Partner"
               className="header-navigation-login"
             />

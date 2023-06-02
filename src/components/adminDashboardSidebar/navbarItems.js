@@ -4,6 +4,7 @@ import LocalMallRoundedIcon from "@mui/icons-material/LocalMallRounded";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
 import FitnessCenterRoundedIcon from "@mui/icons-material/FitnessCenterRounded";
 import CategoryRoundedIcon from "@mui/icons-material/CategoryRounded";
+import RestaurantRoundedIcon from "@mui/icons-material/RestaurantRounded";
 export const mainNavbarItems = [
   {
     id: 0,
@@ -19,8 +20,14 @@ export const mainNavbarItems = [
   },
   {
     id: 2,
-    icon: <LocalShippingRoundedIcon />,
-    label: "Orders",
-    route: "/admin-orders",
+    icon: <RestaurantRoundedIcon />,
+    label: "Restaurants",
+    route: "/admin-restaurants",
+  },
+  {
+    id: 3,
+    icon: <CategoryRoundedIcon />,
+    label: "Categories",
+    route: "/admin-categories",
   },
 ];

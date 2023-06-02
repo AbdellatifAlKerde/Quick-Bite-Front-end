@@ -11,7 +11,8 @@ function OwnerDashboardHome() {
   const { restaurants, owner, updateOwner, fetchRestaurants } =
     useContext(ProductDataContext);
   const [restaurant, setRestaurant] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState({});
+  // const [imgFromBB, setImageFromBB] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [ownerData, setOwnerData] = useState({
     username: "",
@@ -26,6 +27,12 @@ function OwnerDashboardHome() {
     const value = e.target.value;
     setRestaurant({ ...restaurant, [e.target.name]: value });
   };
+
+  // const handleImageChange = (e) => {
+  //   e.preventDefault();
+  //   let image = e.target.files[0];
+  //   setImage(image);
+  // };
 
   const editRestaurant = async (e) => {
     e.preventDefault();
@@ -48,8 +55,56 @@ function OwnerDashboardHome() {
     }
   };
 
+  // upload image to ImageBB
+
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    e.preventDefault();
+    let image = e.target.files[0];
+    setImage(image);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const fd = new FormData();
+      fd.append("image", image, image.name);
+      // formData.append("key", "00751b01b9a9ae627f63adba4e33efd1"); // Replace with your ImgBB API key
+
+      const imgBBResponse = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_KEY}`,
+        fd
+      );
+
+      const imageUrl = imgBBResponse.data.data.display_url;
+
+      const formData = new FormData();
+      formData.append("image", imageUrl);
+
+      const formDt = {
+        image: imageUrl,
+      };
+
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/rest/image/${restaurant._id}`,
+        formDt,
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+      setRestaurant(response.data.response);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(
+        "Error uploading image to ImgBB and saving to the database:",
+        error
+      );
+      setIsLoading(false);
+    }
   };
 
   const editAddImage = async (e) => {
@@ -106,45 +161,6 @@ function OwnerDashboardHome() {
     }
   };
 
-  // const editUsername = async (e) => {
-  //   e.preventDefault();
-  //   setOwnerIsLoading(true);
-
-  //   try {
-  //     const response = await axios.patch(
-  //       `${process.env.REACT_APP_API_URL}/api/admin/username/${owner._id}`,
-  //       { username: username }
-  //     );
-  //     console.log(response);
-  //     updateOwner(response.data.response);
-  //     setOwnerIsLoading(false);
-  //     setUsername("");
-  //   } catch (e) {
-  //     console.log(e);
-  //     setError(e.response.data.message);
-  //     setOwnerIsLoading(false);
-  //   }
-  // };
-
-  // const editPassword = async (e) => {
-  //   e.preventDefault();
-  //   setOwnerIsLoading(true);
-
-  //   try {
-  //     const response = await axios.patch(
-  //       `${process.env.REACT_APP_API_URL}/api/admin/password/${owner._id}`,
-  //       { password: password }
-  //     );
-  //     console.log(response);
-  //     updateOwner(response.data.response);
-  //     setOwnerIsLoading(false);
-  //     setPassword("");
-  //   } catch (e) {
-  //     console.log(e);
-  //     setOwnerIsLoading(false);
-  //   }
-  // };
-
   useEffect(() => {
     const filteredRestaurant = restaurants.filter(
       (resto) => resto.admin._id === owner._id
@@ -167,7 +183,7 @@ function OwnerDashboardHome() {
     <main className="owner-dashboard-home">
       <div className="owner-dashboard-home-restaurant">
         <DashboardHero
-          image={`${process.env.REACT_APP_API_URL}/${restaurant.image}`}
+          image={restaurant.image}
           alt={restaurant.name}
           title={restaurant.name}
         />
@@ -225,7 +241,7 @@ function OwnerDashboardHome() {
           </form>
           <form
             className="owner-dashboard-upload-image"
-            onSubmit={editAddImage}
+            onSubmit={handleSubmit}
           >
             <div>
               <input
@@ -254,6 +270,7 @@ function OwnerDashboardHome() {
                   ></path>
                 </svg>
                 <span>Upload image</span>
+                <span style={{ marginLeft: "1rem" }}> {image.name}</span>
               </label>
             </div>
             <MainButton

@@ -24,13 +24,17 @@ import OwnerDashboardHome from "./pages/owner-dashboard-home/ownerDashboardHome"
 import OwnerDashboardProducts from "./pages/owner-dashboard-products/ownerDashboardProducts";
 import OwnerDashboardOrders from "./pages/owner-dashboard-orders/ownerDashboardOrders";
 import AdminDashboardHome from "./pages/admin-dashboard-home/adminDashboardHome";
+import ScrollToTop from "./components/scroll-to-top/scrollToTop";
+import AdminDashboardUsers from "./pages/admin-dashboard-users/adminDashboardUsers";
+import AdminDashboardRestaurants from "./pages/admin-dashboard-restaurants/adminDashboardRestaurants";
+import AdminDashboardCategories from "./pages/admin-dashboard-categories/adminDashboardCategories";
 
 function App() {
   const location = useLocation();
   const isUserLoginPath = location.pathname === "/user-login";
   const isAdminLoginPath = location.pathname === "/admin-login";
   const isProductPath = location.pathname === "/products";
-  const isAdminDashboardPath = location.pathname === "/admin-dashboard";
+  const isAdminDashboardPath = location.pathname.startsWith("/admin");
   const isOwnerDashboardPath = location.pathname === "/owner-dashboard";
   const isDashboardPath = isAdminDashboardPath || isOwnerDashboardPath;
   const isRestaurantPath = location.pathname === "/restaurants";
@@ -54,6 +58,7 @@ function App() {
     <ProductDataProvider>
       <div className="App">
         {!isProductUserLoginPath && <Header logo={logo} />}
+        <ScrollToTop />
         <Routes>
           <Route>
             <Route exact path="/" element={<HomePage />} />
@@ -76,6 +81,15 @@ function App() {
           <Route path="/" element={<PrivateRoutes />}>
             <Route path="/" element={<AdminDashboard />}>
               <Route path="/admin-dashboard" element={<AdminDashboardHome />} />
+              <Route path="/admin-users" element={<AdminDashboardUsers />} />
+              <Route
+                path="/admin-restaurants"
+                element={<AdminDashboardRestaurants />}
+              />
+              <Route
+                path="/admin-categories"
+                element={<AdminDashboardCategories />}
+              />
             </Route>
           </Route>
           <Route path="/" element={<OwnerPrivateRoutes />}>

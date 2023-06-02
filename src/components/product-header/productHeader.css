@@ -66,6 +66,15 @@
   .product-page-search-bar {
     display: none;
   }
+
+  .product-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: var(--primary-color);
+  }
 }
 
 @media (max-width: 768px) {

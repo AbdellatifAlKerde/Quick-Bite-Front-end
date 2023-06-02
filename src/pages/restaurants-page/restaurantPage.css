@@ -36,15 +36,17 @@
 }
 
 @media (max-width: 768px) {
-  .restaurants-page {
-    margin-top: 92px;
-  }
-
   .restaurants-page-cards-section {
     padding-inline: var(--mobile-padding);
   }
 
   .restaurant-page-hero {
     margin-inline: var(--mobile-padding);
+  }
+}
+
+@media (max-width: 1200px) {
+  .restaurants-page {
+    margin-top: 92px;
   }
 }

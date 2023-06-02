@@ -61,7 +61,7 @@ function ProductsPage() {
       <main className="products-page">
         {selectedProduct && (
           <ProductPopup
-            src={`${process.env.REACT_APP_API_URL}/${selectedProduct.image}`}
+            src={selectedProduct.image}
             alt={selectedProduct.name}
             title={selectedProduct.name}
             description={selectedProduct.description}
@@ -101,7 +101,7 @@ function ProductsPage() {
                 selectedCategory === cat._id ? "category-card-selected" : ""
               }`}
               key={cat._id}
-              src={`${process.env.REACT_APP_API_URL}/${cat.image}`}
+              src={cat.image}
               name={cat.name}
               alt={cat.name}
               onClick={() => handleCategoryClick(cat._id)}
@@ -124,7 +124,7 @@ function ProductsPage() {
             : products.map((product) => (
                 <ProductCard
                   key={product._id}
-                  src={`${process.env.REACT_APP_API_URL}/${product.image}`}
+                  src={product.image}
                   alt={product.name}
                   title={product.name}
                   description={product.description}

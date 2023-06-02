@@ -21,14 +21,15 @@ function OwnerDashboardOrders() {
   }, [restaurant, restaurants]);
 
   useEffect(() => {
-    const filteredOrders = orders.filter((order) =>
-      order.products.some(
-        (product) => product._id.restaurant_id._id === restaurant._id
-      )
-    );
-
-    if (filteredOrders.length > 0) {
-      setRestoOrders(filteredOrders);
+    if (restaurants._id) {
+      const filteredOrders = orders.filter((order) =>
+        order.products.some(
+          (product) => product._id.restaurant_id._id === restaurant._id
+        )
+      );
+      if (filteredOrders.length > 0) {
+        setRestoOrders(filteredOrders);
+      }
     }
   }, [restaurant, orders]);
 
@@ -37,7 +38,7 @@ function OwnerDashboardOrders() {
     {
       field: "user.username",
       headerName: "Username",
-      width: 80,
+      width: 220,
       valueGetter: (params) => {
         return params.row.user.map((user) => user.username).join(", ");
       },
@@ -45,7 +46,7 @@ function OwnerDashboardOrders() {
     {
       field: "user.phone",
       headerName: "Phone",
-      width: 100,
+      width: 220,
       valueGetter: (params) => {
         return params.row.user.map((user) => user.phone).join(", ");
       },
@@ -53,7 +54,7 @@ function OwnerDashboardOrders() {
     {
       field: "user.address",
       headerName: "Address",
-      width: 100,
+      width: 220,
       valueGetter: (params) => {
         return params.row.user.map((user) => user.address).join(", ");
       },
@@ -102,7 +103,7 @@ function OwnerDashboardOrders() {
         <DashboardHero image={ordersImage} alt="Order image" title="Orders" />
         <div className="owner-dashboard-orders-table">
           <DataGrid
-            sx={{ width: "100%", height: "58vh" }}
+            sx={{ width: "100%", height: "58vh", fontSize: "1.2rem" }}
             rows={restoOrders}
             columns={columns}
             initialState={{

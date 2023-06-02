@@ -1,7 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import "./ownerDashboardProducts.css";
-import DashboardHero from "../../components/dashboard-hero/dashboardHero";
-import productHero from "../../assets/images/dashboard-hero-products.jpg";
 import { ProductDataContext } from "../../components/product-data-provider/productDataProvider";
 import Spinner from "../../components/spinner/spinner";
 import { DataGrid } from "@mui/x-data-grid";
@@ -13,29 +10,21 @@ import Swal from "sweetalert2";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import DashboardHero from "../../components/dashboard-hero/dashboardHero";
+import categoriesImage from "../../assets/images/admin-dashboard-categories.jpg";
 
-function OwnerDashboardProducts() {
-  const { restaurants, owner, products, categories, fetchProducts } =
-    useContext(ProductDataContext);
-  const [restaurant, setRestaurant] = useState({});
-  const [restoProducts, setRestoProducts] = useState([]);
+function AdminDashboardCategories() {
+  const { categories, fetchCategories } = useContext(ProductDataContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [image, setImage] = useState({});
-  const [productAddData, setProductAddData] = useState({
+  const [categoryAddData, setCategoryAddData] = useState({
     name: "",
-    description: "",
-    price: "",
-    category: "",
-    restaurant_id: restaurant._id,
   });
 
-  const [productEditData, setProductEditData] = useState({
+  const [categoryEditData, setCategoryEditData] = useState({
     name: "",
-    description: "",
-    price: "",
-    category: "",
-    restaurant_id: restaurant._id,
   });
+  const [image, setImage] = useState({});
+
   const [isEdit, setIsEdit] = useState(false);
 
   const [error, setError] = useState("");
@@ -45,24 +34,13 @@ function OwnerDashboardProducts() {
 
   const handleFormChange = (event) => {
     const value = event.target.value;
-    setProductAddData({ ...productAddData, [event.target.name]: value });
-    console.log(productAddData);
+    setCategoryAddData({ ...categoryAddData, [event.target.name]: value });
   };
 
   const handleEditChange = (event) => {
     const value = event.target.value;
-    setProductEditData({ ...productEditData, [event.target.name]: value });
-    console.log(productEditData);
+    setCategoryEditData({ ...categoryEditData, [event.target.name]: value });
   };
-
-  // const handleAddImageChange = (e) => {
-  //   setProductAddData({ ...productAddData, image: e.target.files[0] });
-  //   console.log(productAddData.image);
-  // };
-
-  // const handleEditImageChange = (e) => {
-  //   setProductEditData({ ...productEditData, image: e.target.files[0] });
-  // };
 
   const handleImageChange = (e) => {
     e.preventDefault();
@@ -70,20 +48,13 @@ function OwnerDashboardProducts() {
     setImage(image);
   };
 
-  const triggerEdit = () => {
-    setIsEdit(true);
+  const handleFetchCategories = () => {
+    fetchCategories();
   };
 
-  const addProduct = async (e) => {
+  const addCategory = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // const productAddForm = new FormData();
-    // productAddForm.append("name", productAddData.name);
-    // productAddForm.append("description", productAddData.description);
-    // productAddForm.append("price", productAddData.price);
-    // productAddForm.append("category", productAddData.category._id);
-    // productAddForm.append("restaurant_id", restaurant._id);
 
     try {
       const fd = new FormData();
@@ -98,23 +69,15 @@ function OwnerDashboardProducts() {
 
       const formData = new FormData();
       formData.append("image", imageUrl);
-      formData.append("name", productAddData.name);
-      formData.append("description", productAddData.description);
-      formData.append("price", productAddData.price);
-      formData.append("category", productAddData.category._id);
-      formData.append("restaurant_id", restaurant._id);
+      formData.append("name", categoryAddData.name);
 
       const formDt = {
         image: imageUrl,
-        name: productAddData.name,
-        description: productAddData.description,
-        price: productAddData.price,
-        category: productAddData.category._id,
-        restaurant_id: restaurant._id,
+        name: categoryAddData.name,
       };
 
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/product`,
+        `${process.env.REACT_APP_API_URL}/api/category`,
         formDt,
         {
           headers: {
@@ -125,29 +88,17 @@ function OwnerDashboardProducts() {
       console.log(response);
       setIsSubmitting(false);
       setOpenPopup(false);
-      setProductAddData({
-        name: "",
-        description: "",
-        price: "",
-        category: "",
-      });
-      setError("");
-      fetchProducts();
-    } catch (e) {
+    } catch (error) {
       console.error(
         "Error uploading image to ImgBB and saving to the database:",
         error
       );
-      console.log(e);
-      setError(e.response.data);
       setIsSubmitting(false);
     }
   };
 
-  const editProduct = async (e) => {
+  const editCategory = async (e) => {
     e.preventDefault();
-
-    setIsSubmitting(true);
     const fd = new FormData();
     fd.append("image", image, image.name);
 
@@ -158,26 +109,19 @@ function OwnerDashboardProducts() {
 
     const imageUrl = imgBBResponse.data.data.display_url;
 
-    const productEditForm = new FormData();
-    productEditForm.append("name", productEditData.name);
-    productEditForm.append("image", imageUrl);
-    productEditForm.append("description", productEditData.description);
-    productEditForm.append("price", productEditData.price);
-    productEditForm.append("category", productEditData.category._id);
-    productEditForm.append("restaurant_id", restaurant._id);
+    setIsSubmitting(true);
+    const categoryEditForm = new FormData();
+    categoryEditForm.append("name", categoryEditData.name);
+    categoryEditForm.append("image", imageUrl);
 
     const formDt = {
       image: imageUrl,
-      name: productEditData.name,
-      description: productEditData.description,
-      price: productEditData.price,
-      category: productEditData.category._id,
-      restaurant_id: restaurant._id,
+      name: categoryEditData.name,
     };
 
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/api/product/${editId._id}`,
+        `${process.env.REACT_APP_API_URL}/api/category/${editId._id}`,
         formDt,
         {
           headers: {
@@ -190,14 +134,10 @@ function OwnerDashboardProducts() {
       setIsSubmitting(true);
       setOpenPopup(false);
       setIsEdit(false);
-      setProductEditData({
+      setCategoryEditData({
         name: "",
-        description: "",
-        price: "",
-        category: "",
       });
       setError("");
-      // setError(response.data.message);
     } catch (e) {
       console.log(e);
       setError(e.response.data);
@@ -205,7 +145,7 @@ function OwnerDashboardProducts() {
     }
   };
 
-  const deleteProduct = async (id) => {
+  const deleteCategory = async (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -218,47 +158,22 @@ function OwnerDashboardProducts() {
       if (result.isConfirmed) {
         try {
           await axios
-            .delete(`${process.env.REACT_APP_API_URL}/api/product/${id}`)
+            .delete(`${process.env.REACT_APP_API_URL}/api/category/${id}`)
             .then((response) => {
               console.log(response.data);
-              // getProducts();
-              // getCategories();
+              handleFetchCategories();
             });
         } catch (error) {
           console.log(error);
         }
-        Swal.fire("Deleted!", "Your product has been deleted.", "success");
+        Swal.fire("Deleted!", "Category has been deleted.", "success");
       }
     });
   };
 
-  useEffect(() => {
-    const filteredRestaurant = restaurants.filter(
-      (resto) => resto.admin._id === owner._id
-    );
-
-    if (filteredRestaurant.length > 0) {
-      setRestaurant(filteredRestaurant[0]);
-    }
-  }, [restaurant, restaurants]);
-
-  useEffect(() => {
-    const filteredProducts = products.filter(
-      (product) => product.restaurant_id._id === restaurant._id
-    );
-
-    if (filteredProducts.length > 0) {
-      setRestoProducts(filteredProducts);
-    }
-  }, [restaurant, products]);
-
-  if (!products || !restaurant) {
-    return (
-      <div className="owner-dashboard-loading">
-        <Spinner />
-      </div>
-    );
-  }
+  const triggerEdit = () => {
+    setIsEdit(true);
+  };
 
   const columns = [
     { field: "_id", headerName: "ID", width: 220 },
@@ -279,7 +194,6 @@ function OwnerDashboardProducts() {
             }}
           >
             <img src={image} style={{ objectFit: "cover" }} />
-            {console.log(image)}
           </div>
         );
       },
@@ -298,33 +212,7 @@ function OwnerDashboardProducts() {
         );
       },
     },
-    {
-      field: "description",
-      headerName: "Description",
-      width: 300,
-      renderCell: (params) => {
-        const description = params.row.description;
 
-        return (
-          <div
-            style={{
-              overflow: "scroll",
-            }}
-          >
-            {description}
-          </div>
-        );
-      },
-    },
-    { field: "price", headerName: "Price ($)", width: 80 },
-    {
-      field: "category",
-      headerName: "Category",
-      width: 200,
-      valueGetter: (params) => {
-        return params.row.category.name;
-      },
-    },
     {
       field: "actions",
       headerName: "Actions",
@@ -335,7 +223,7 @@ function OwnerDashboardProducts() {
           <IconButton
             color="secondary"
             aria-label="delete"
-            onClick={() => deleteProduct(params.id)}
+            onClick={() => deleteCategory(params.id)}
           >
             <DeleteIcon style={{ color: "var(--accent-color)" }} />
           </IconButton>
@@ -346,11 +234,8 @@ function OwnerDashboardProducts() {
               triggerEdit();
               setOpenPopup(true);
               setEditId(params.row);
-              setProductEditData({
+              setCategoryEditData({
                 name: params.row.name,
-                description: params.row.description,
-                price: params.row.price,
-                category: params.row.category,
               });
             }}
           >
@@ -370,9 +255,10 @@ function OwnerDashboardProducts() {
       {/* {console.log(productEditData.image)} */}
       <div className="owner-dashboard-products-container">
         <DashboardHero
-          image={productHero}
-          alt="Food image"
-          title="My Products"
+          style={{ filter: "brightness(30%)" }}
+          image={categoriesImage}
+          alt="Categories image"
+          title="Categories"
         />
         <div className="owner-dashboard-products-table">
           <div className="owner-dashboard-products-table-add-btn">
@@ -384,34 +270,26 @@ function OwnerDashboardProducts() {
           </div>
           {openPopup && (
             <DashboardPopup
-              title={isEdit ? "Edit Product" : "Add Product"}
+              title={isEdit ? "Edit Category" : "Add Category"}
               onClick={
                 isEdit
                   ? () => {
                       setOpenPopup(false);
                       setIsEdit(false);
-                      setProductEditData({
+                      setCategoryEditData({
                         name: "",
-                        description: "",
-                        price: "",
-                        category: "",
-                        image: null,
                       });
                       setError("");
                     }
                   : () => {
                       setOpenPopup(false);
-                      setProductAddData({
+                      setCategoryAddData({
                         name: "",
-                        description: "",
-                        price: "",
-                        category: "",
-                        image: null,
                       });
                       setError("");
                     }
               }
-              onSubmit={isEdit ? editProduct : addProduct}
+              onSubmit={isEdit ? editCategory : addCategory}
             >
               <div
                 style={{ color: "var(--accent-color)", cursor: "pointer" }}
@@ -427,78 +305,12 @@ function OwnerDashboardProducts() {
                   autoFocus={isEdit ? true : false}
                   onChange={isEdit ? handleEditChange : handleFormChange}
                   // value={isEdit ? productEditData.name : productAddData.name}
-                  defaultValue={isEdit ? editId.name : ""}
+                  // defaultValue={isEdit ? editId.name : ""}
                   required={true}
                   // placeholder={isEdit && editId.name}
                 />
               </div>
-              <div>
-                <TextField
-                  label="Description"
-                  type="text"
-                  name="description"
-                  onChange={isEdit ? handleEditChange : handleFormChange}
-                  // value={
-                  //   isEdit
-                  //     ? productEditData.description
-                  //     : productAddData.description
-                  // }
-                  required={true}
-                  defaultValue={isEdit ? editId.description : ""}
-                  // placeholder={isEdit && editId.description}
-                />
-              </div>
-              <div>
-                <TextField
-                  label="price"
-                  type="number"
-                  style={{
-                    padding: "16px 15px",
-                    borderRadius: "var(--border-radius-mini)",
-                  }}
-                  name="price"
-                  onChange={isEdit ? handleEditChange : handleFormChange}
-                  // value={isEdit ? productEditData.price : productAddData.price}
-                  required={true}
-                  defaultValue={isEdit ? editId.price : ""}
-                  // placeholder={isEdit && editId.price}
-                />
-              </div>
-              <div>
-                <label>
-                  Category
-                  <select
-                    className="dashboard-admin-select"
-                    name="category"
-                    value={
-                      isEdit
-                        ? productEditData.category._id
-                        : productAddData.category._id
-                    } // or formData.category.name
-                    onChange={
-                      isEdit
-                        ? (e) =>
-                            setProductEditData({
-                              ...productEditData,
-                              category: { _id: e.target.value },
-                            })
-                        : (e) =>
-                            setProductAddData({
-                              ...productAddData,
-                              category: { _id: e.target.value },
-                            })
-                    }
-                    defaultValue={editId && editId.category._id}
-                  >
-                    {categories &&
-                      categories.map((category) => (
-                        <option key={category._id} value={category._id}>
-                          {category.name}
-                        </option>
-                      ))}
-                  </select>
-                </label>
-              </div>
+
               <div>
                 <input
                   type="file"
@@ -525,7 +337,7 @@ function OwnerDashboardProducts() {
                       d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
                     ></path>
                   </svg>
-                  <span>Upload image (required)</span>
+                  <span>Upload image</span>
                   <span> {image.name}</span>
                 </label>
               </div>
@@ -550,7 +362,7 @@ function OwnerDashboardProducts() {
 
           <DataGrid
             sx={{ width: "100%", height: "58vh", fontSize: "1.2rem" }}
-            rows={restoProducts}
+            rows={categories}
             columns={columns}
             initialState={{
               pagination: {
@@ -569,4 +381,4 @@ function OwnerDashboardProducts() {
   );
 }
 
-export default OwnerDashboardProducts;
+export default AdminDashboardCategories;

@@ -85,7 +85,7 @@ function RestaurantDetails() {
     <div className="restaurant-details-page">
       {selectedProduct && (
         <ProductPopup
-          src={`${process.env.REACT_APP_API_URL}/${selectedProduct.image}`}
+          src={selectedProduct.image}
           alt={selectedProduct.name}
           title={selectedProduct.name}
           description={selectedProduct.description}
@@ -111,7 +111,7 @@ function RestaurantDetails() {
       <CartContainer />
       <div className="restaurant-details-page-hero">
         <img
-          src={`${process.env.REACT_APP_API_URL}/${restaurant.image}`}
+          src={restaurant.image}
           alt={restaurant.name}
           width="100%"
           height="100%"
@@ -168,7 +168,7 @@ function RestaurantDetails() {
                               )
                               .map((prod) => (
                                 <ProductCard
-                                  src={`${process.env.REACT_APP_API_URL}/${prod.image}`}
+                                  src={prod.image}
                                   title={prod.name}
                                   description={prod.description}
                                   price={prod.price}

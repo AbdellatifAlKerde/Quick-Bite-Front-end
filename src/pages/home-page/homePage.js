@@ -36,7 +36,7 @@ function HomePage() {
     <div className="home-page">
       {selectedProduct && (
         <ProductPopup
-          src={`${process.env.REACT_APP_API_URL}/${selectedProduct.image}`}
+          src={selectedProduct.image}
           alt={selectedProduct.name}
           title={selectedProduct.name}
           description={selectedProduct.description}
@@ -124,7 +124,7 @@ function HomePage() {
             : limitedProducts.map((product) => (
                 <ProductCard
                   key={product._id}
-                  src={`${process.env.REACT_APP_API_URL}/${product.image}`}
+                  src={product.image}
                   alt={product.name}
                   title={product.name}
                   description={product.description}

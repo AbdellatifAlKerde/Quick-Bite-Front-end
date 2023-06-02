@@ -25,7 +25,7 @@ function RestaurantPage() {
           : restaurants.map((rest) => (
               <RestaurantCard
                 key={rest._id}
-                src={`${process.env.REACT_APP_API_URL}/${rest.image}`}
+                src={rest.image}
                 name={rest.name}
                 description={rest.description}
                 location={rest.location}

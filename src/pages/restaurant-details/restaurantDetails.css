@@ -76,12 +76,9 @@
 }
 
 @media (max-width: 767px) {
-  .restaurant-details-page {
-    margin-top: 92px;
-  }
-
   .restaurant-categories-links {
     flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .restaurant-categories {
@@ -117,5 +114,11 @@
     background-color: var(--primary-color);
     padding-top: 1rem;
     z-index: 9;
+  }
+}
+
+@media (max-width: 1200px) {
+  .restaurant-details-page {
+    margin-top: 92px;
   }
 }

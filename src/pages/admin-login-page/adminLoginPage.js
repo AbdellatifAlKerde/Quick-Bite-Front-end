@@ -6,6 +6,7 @@ import MainButton from "../../components/main-button/MainButton";
 import Spinner from "../../components/spinner/spinner";
 import axios from "axios";
 import Cookies from "js-cookie";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 
 function AdminLoginPage() {
   const navigate = useNavigate();
@@ -59,6 +60,9 @@ function AdminLoginPage() {
   return (
     <div className="admin-login-page">
       <div className="admin-login-container">
+        <div className="admin-login-back-btn" onClick={() => navigate(-1)}>
+          <ArrowBackRoundedIcon />
+        </div>
         <h2>Login</h2>
         <form className="admin-login-form" onSubmit={login}>
           <div
