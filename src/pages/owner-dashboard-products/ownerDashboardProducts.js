@@ -25,7 +25,7 @@ function OwnerDashboardProducts() {
     name: "",
     description: "",
     price: "",
-    category: "",
+    category: null,
     restaurant_id: restaurant._id,
   });
 
@@ -33,7 +33,7 @@ function OwnerDashboardProducts() {
     name: "",
     description: "",
     price: "",
-    category: "",
+    category: null,
     restaurant_id: restaurant._id,
   });
   const [isEdit, setIsEdit] = useState(false);
@@ -46,23 +46,12 @@ function OwnerDashboardProducts() {
   const handleFormChange = (event) => {
     const value = event.target.value;
     setProductAddData({ ...productAddData, [event.target.name]: value });
-    console.log(productAddData);
   };
 
   const handleEditChange = (event) => {
     const value = event.target.value;
     setProductEditData({ ...productEditData, [event.target.name]: value });
-    console.log(productEditData);
   };
-
-  // const handleAddImageChange = (e) => {
-  //   setProductAddData({ ...productAddData, image: e.target.files[0] });
-  //   console.log(productAddData.image);
-  // };
-
-  // const handleEditImageChange = (e) => {
-  //   setProductEditData({ ...productEditData, image: e.target.files[0] });
-  // };
 
   const handleImageChange = (e) => {
     e.preventDefault();
@@ -101,7 +90,8 @@ function OwnerDashboardProducts() {
       formData.append("name", productAddData.name);
       formData.append("description", productAddData.description);
       formData.append("price", productAddData.price);
-      formData.append("category", productAddData.category._id);
+      // formData.append("category", productAddData.category._id);
+      formData.append("category", productAddData.category);
       formData.append("restaurant_id", restaurant._id);
 
       const formDt = {
@@ -109,7 +99,8 @@ function OwnerDashboardProducts() {
         name: productAddData.name,
         description: productAddData.description,
         price: productAddData.price,
-        category: productAddData.category._id,
+        // category: productAddData.category._id,
+        category: productAddData.category,
         restaurant_id: restaurant._id,
       };
 
@@ -149,7 +140,8 @@ function OwnerDashboardProducts() {
 
     setIsSubmitting(true);
     const fd = new FormData();
-    fd.append("image", image, image.name);
+    // fd.append("image", image, image.name);
+    fd.append("image", image);
 
     const imgBBResponse = await axios.post(
       `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_KEY}`,
@@ -163,7 +155,7 @@ function OwnerDashboardProducts() {
     productEditForm.append("image", imageUrl);
     productEditForm.append("description", productEditData.description);
     productEditForm.append("price", productEditData.price);
-    productEditForm.append("category", productEditData.category._id);
+    productEditForm.append("category", productEditData.category);
     productEditForm.append("restaurant_id", restaurant._id);
 
     const formDt = {
@@ -171,7 +163,7 @@ function OwnerDashboardProducts() {
       name: productEditData.name,
       description: productEditData.description,
       price: productEditData.price,
-      category: productEditData.category._id,
+      category: productEditData.category,
       restaurant_id: restaurant._id,
     };
 
@@ -240,7 +232,7 @@ function OwnerDashboardProducts() {
     if (filteredRestaurant.length > 0) {
       setRestaurant(filteredRestaurant[0]);
     }
-  }, [restaurant, restaurants]);
+  }, [restaurant, restaurants, owner._id]);
 
   useEffect(() => {
     const filteredProducts = products.filter(
@@ -278,8 +270,7 @@ function OwnerDashboardProducts() {
               overflow: "hidden",
             }}
           >
-            <img src={image} style={{ objectFit: "cover" }} />
-            {console.log(image)}
+            <img src={image} alt="" style={{ objectFit: "cover" }} />
           </div>
         );
       },
@@ -367,7 +358,7 @@ function OwnerDashboardProducts() {
 
   return (
     <div className="owner-dashboard-products">
-      {/* {console.log(productEditData.image)} */}
+      {console.log(productEditData)}
       <div className="owner-dashboard-products-container">
         <DashboardHero
           image={productHero}
@@ -472,23 +463,24 @@ function OwnerDashboardProducts() {
                     name="category"
                     value={
                       isEdit
-                        ? productEditData.category._id
-                        : productAddData.category._id
+                        ? productEditData.category
+                        : productAddData.category
                     } // or formData.category.name
-                    onChange={
-                      isEdit
-                        ? (e) =>
-                            setProductEditData({
-                              ...productEditData,
-                              category: { _id: e.target.value },
-                            })
-                        : (e) =>
-                            setProductAddData({
-                              ...productAddData,
-                              category: { _id: e.target.value },
-                            })
-                    }
-                    defaultValue={editId && editId.category._id}
+                    // onChange={
+                    //   isEdit
+                    //     ? (e) =>
+                    //         setProductEditData({
+                    //           ...productEditData,
+                    //           category: { _id: e.target.value },
+                    //         })
+                    //     : (e) =>
+                    //         setProductAddData({
+                    //           ...productAddData,
+                    //           category: { _id: e.target.value },
+                    //         })
+                    // }
+                    onChange={isEdit ? handleEditChange : handleFormChange}
+                    // defaultValue={editId && editId.category._id}
                   >
                     {categories &&
                       categories.map((category) => (
@@ -505,7 +497,7 @@ function OwnerDashboardProducts() {
                   name="image"
                   id="file-input"
                   onChange={handleImageChange}
-                  // value={isEdit ? productEditData.image : productAddData.image}
+                  // value={isEdit && editId.image}
                   className="file-input__input"
                   // required={true}
                 />

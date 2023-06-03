@@ -16,6 +16,8 @@ function AdminLoginPage() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [showLogoutBtn, setShowLogoutBtn] = useState(false);
+  const [success, setSuccess] = useState("");
 
   const handleLoginChange = (event) => {
     const value = event.target.value;
@@ -34,27 +36,36 @@ function AdminLoginPage() {
         `${process.env.REACT_APP_API_URL}/api/admin/login`,
         adminForm
       );
-      console.log(response);
-      if (response.data.isActive) {
-        if (response.status === 200) {
-          const oneWeek = 7 * 24 * 60 * 60 * 1000;
-          Cookies.set("admin-token", response.data.token, { expires: oneWeek });
-        }
-        if (response.data.isSuper) {
-          const oneWeek = 7 * 24 * 60 * 60 * 1000;
-          Cookies.set("isSuper", response.data.isSuper, { expires: oneWeek });
-          localStorage.setItem("admin", JSON.stringify(response.data));
-          navigate("/admin-dashboard");
+      // console.log(response);
+      const tokenExists = Cookies.get("admin-token");
+      if (!tokenExists) {
+        if (response.data.isActive) {
+          if (response.status === 200) {
+            const oneWeek = 7 * 24 * 60 * 60 * 1000;
+            Cookies.set("admin-token", response.data.token, {
+              expires: oneWeek,
+            });
+          }
+          if (response.data.isSuper) {
+            const oneWeek = 7 * 24 * 60 * 60 * 1000;
+            Cookies.set("isSuper", response.data.isSuper, { expires: oneWeek });
+            localStorage.setItem("admin", JSON.stringify(response.data));
+            navigate("/admin-dashboard");
+          } else {
+            const oneWeek = 7 * 24 * 60 * 60 * 1000;
+            Cookies.set("isOwner", response.data.isSuper, { expires: oneWeek });
+            localStorage.setItem("owner", JSON.stringify(response.data));
+            navigate("/owner-dashboard");
+          }
+          setIsLoading(false);
         } else {
-          const oneWeek = 7 * 24 * 60 * 60 * 1000;
-          Cookies.set("isOwner", response.data.isSuper, { expires: oneWeek });
-          localStorage.setItem("owner", JSON.stringify(response.data));
-          navigate("/owner-dashboard");
+          setIsLoading(false);
+          setError("Account is not active, please activate your account");
         }
-        setIsLoading(false);
       } else {
+        setError("Can't login with both admin and owner.");
         setIsLoading(false);
-        setError("Account is not active, please activate your account");
+        setShowLogoutBtn(true);
       }
     } catch (e) {
       console.log(e);
@@ -75,6 +86,37 @@ function AdminLoginPage() {
             onClick={() => setError("")}
           >
             {error}
+            {showLogoutBtn && (
+              <div
+                onClick={() => {
+                  Cookies.remove("admin-token");
+                  Cookies.get("isSuper")
+                    ? Cookies.remove("isSuper")
+                    : Cookies.remove("isOwner");
+                  setSuccess("Logout Successfully!");
+                  setShowLogoutBtn(false);
+                }}
+                style={{
+                  color: "var(--primary-color)",
+                  backgroundColor: "var(--text-color-1)",
+                  paddingInline: ".5rem",
+                  textAlign: "center",
+                  display: "inline-block",
+                  borderRadius: "1rem",
+                  letterSpacing: "1px",
+                  marginLeft: ".5rem",
+                }}
+              >
+                Logout first!
+              </div>
+            )}
+          </div>
+          <div
+            className="user-logout-success-message"
+            onClick={() => setSuccess("")}
+            style={{ color: "green", textAlign: "center", cursor: "pointer" }}
+          >
+            {success}
           </div>
           <TextField
             type="text"
