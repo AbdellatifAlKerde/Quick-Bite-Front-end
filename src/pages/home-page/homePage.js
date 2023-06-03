@@ -26,7 +26,7 @@ function HomePage() {
     setSelectedProduct(product);
   };
 
-  const limitedProducts = products.slice(0, 3);
+  const limitedProducts = products.slice(-3);
 
   const close = () => {
     document.querySelector(".cart-container").classList.toggle("close");
