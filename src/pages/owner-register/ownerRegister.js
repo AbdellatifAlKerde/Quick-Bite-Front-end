@@ -41,13 +41,13 @@ function OwnerRegister() {
       );
       console.log(ownerResponse);
       if (ownerResponse.status === 201) {
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        Cookies.set("admin-token", ownerResponse.data.response.token, {
-          expires: oneWeek,
-        });
-        Cookies.set("isOwner", ownerResponse.data.response.isSuper, {
-          expires: oneWeek,
-        });
+        // const oneWeek = 7 * 24 * 60 * 60 * 1000;
+        // Cookies.set("admin-token", ownerResponse.data.response.token, {
+        //   expires: oneWeek,
+        // });
+        // Cookies.set("isOwner", ownerResponse.data.response.isSuper, {
+        //   expires: oneWeek,
+        // });
 
         const restoResponse = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/rest`,
