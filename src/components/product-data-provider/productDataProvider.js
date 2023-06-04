@@ -482,7 +482,7 @@ function ProductDataProvider({ children }) {
         handleRestaurantClick,
         selectedRestaurant,
         categories,
-        // fetchCategories,
+        fetchAllCategories,
         allCategories,
         restaurants,
         restaurantsPage,

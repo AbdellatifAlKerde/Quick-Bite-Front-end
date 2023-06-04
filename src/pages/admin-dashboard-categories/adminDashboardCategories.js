@@ -14,7 +14,7 @@ import DashboardHero from "../../components/dashboard-hero/dashboardHero";
 import categoriesImage from "../../assets/images/admin-dashboard-categories.jpg";
 
 function AdminDashboardCategories() {
-  const { categories, fetchCategories } = useContext(ProductDataContext);
+  const { allCategories, fetchAllCategories } = useContext(ProductDataContext);
   const [isLoading, setIsLoading] = useState(false);
   const [categoryAddData, setCategoryAddData] = useState({
     name: "",
@@ -49,7 +49,7 @@ function AdminDashboardCategories() {
   };
 
   const handleFetchCategories = () => {
-    fetchCategories();
+    fetchAllCategories();
   };
 
   const addCategory = async (e) => {
@@ -363,7 +363,7 @@ function AdminDashboardCategories() {
 
           <DataGrid
             sx={{ width: "100%", height: "58vh", fontSize: "1.2rem" }}
-            rows={categories}
+            rows={allCategories}
             columns={columns}
             initialState={{
               pagination: {
