@@ -15,7 +15,7 @@ import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlin
 
 function UserProfile() {
   const navigate = useNavigate();
-  const { user, orders, fetchOrders, updateUser } =
+  const { user, allOrders, fetchOrders, updateUser } =
     useContext(ProductDataContext);
   const [userOrders, setUserOrders] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -33,14 +33,14 @@ function UserProfile() {
 
   useEffect(() => {
     const userId = user && user._id;
-    const filteredOrders = orders.filter(
+    const filteredOrders = allOrders.filter(
       (order) => order.user[0]._id === userId
     );
     if (filteredOrders.length > 0) {
       setUserOrders(filteredOrders);
     }
     setUserData(user);
-  }, [user, orders]);
+  }, [user, allOrders]);
 
   const handleReload = () => {
     window.location.reload();

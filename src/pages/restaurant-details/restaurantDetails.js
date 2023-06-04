@@ -10,16 +10,36 @@ import ItemAddedNotification from "../../components/item-added-notification/item
 import ProductPopup from "../../components/product-popup/productPopup";
 import Footer from "../../components/footer/footer";
 import Spinner from "../../components/spinner/spinner";
+import axios from "axios";
 
 function RestaurantDetails() {
   const { id } = useParams();
-  const { restaurants, categories, products, addToCart, addToCartPopup } =
+  const { restaurants, allCategories, addToCart, addToCartPopup } =
     useContext(ProductDataContext);
   const [restaurant, setRestaurant] = useState(null);
+  const [products, setProducts] = useState([]);
   const [restoProducts, setRestoProducts] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isAdded, setIsAdded] = useState(false);
   const [countItems, setCountItems] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/product?page=1&limit=100`
+      );
+      console.log(response);
+      setProducts(response.data.items);
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   const handleAddToCartPopup = (product) => {
     addToCartPopup(product, countItems);
@@ -60,9 +80,10 @@ function RestaurantDetails() {
     if (filteredProducts.length > 0) {
       setRestoProducts(filteredProducts);
     }
+    console.log(restoProducts);
   }, [id, products]);
 
-  if (!restaurant) {
+  if (!restaurant || !products) {
     return (
       <div
         style={{
@@ -129,7 +150,7 @@ function RestaurantDetails() {
           <section className="restaurant-details-cat-prod">
             <div className="restaurant-categories">
               <div className="restaurant-categories-links">
-                {categories.map(
+                {allCategories.map(
                   (cat) =>
                     restoProducts.filter(
                       (product) =>
@@ -144,7 +165,7 @@ function RestaurantDetails() {
               </div>
             </div>
             <div className="restaurant-products">
-              {categories.map(
+              {allCategories.map(
                 (cat) =>
                   restoProducts.filter(
                     (product) =>
@@ -188,7 +209,7 @@ function RestaurantDetails() {
             {restaurant.name} doesn't have items yet...
           </section>
         )}
-        <div></div>
+        {/* <div></div> */}
       </div>
     </div>
   );

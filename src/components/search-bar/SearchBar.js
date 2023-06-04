@@ -71,8 +71,10 @@ function SearchBar(props) {
       resto.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredProducts = products.filter((product) =>
-    product.category.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProducts = products.filter(
+    (product) =>
+      product.category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

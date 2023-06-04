@@ -13,7 +13,7 @@ import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
 import { IconButton } from "@mui/material";
 
 function OwnerDashboardOrders() {
-  const { orders, restaurants, owner, fetchOrders } =
+  const { allOrders, restaurants, owner, fetchOrders } =
     useContext(ProductDataContext);
   const [restaurant, setRestaurant] = useState({});
   const [restoOrders, setRestoOrders] = useState({});
@@ -29,7 +29,7 @@ function OwnerDashboardOrders() {
   }, [restaurant, restaurants]);
 
   useEffect(() => {
-    const filteredOrders = orders.filter((order) =>
+    const filteredOrders = allOrders.filter((order) =>
       order.products.some(
         (product) => product._id.restaurant_id._id === restaurant._id
       )
@@ -37,8 +37,8 @@ function OwnerDashboardOrders() {
     if (filteredOrders.length > 0) {
       setRestoOrders(filteredOrders);
     }
-    console.log(filteredOrders);
-  }, [restaurant, orders]);
+    console.log(allOrders);
+  }, [restaurant, allOrders]);
 
   const handleRefetch = () => {
     fetchOrders();

@@ -7,29 +7,47 @@ const ProductDataContext = createContext();
 
 function ProductDataProvider({ children }) {
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
+  const [allRestaurants, setAllRestaurants] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState();
   const [admin, setAdmin] = useState([]);
   const [owner, setOwner] = useState([]);
   const [owners, setOwners] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [allOrders, setAllOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+
+  // Pagination
+  const [productsPage, setProductsPage] = useState(1);
+  const [totalProductsPages, setTotalProductsPages] = useState(1);
+
+  const [restaurantsPage, setRestaurantsPage] = useState(1);
+  const [totalRestaurantsPages, setTotalRestaurantsPages] = useState(1);
+
+  const [categoriesPage, setCategoriesPage] = useState(1);
+  const [totalCategoriesPages, setTotalCategoriesPages] = useState(1);
 
   const loggedUser = localStorage.getItem("user");
   const loggedAdmin = localStorage.getItem("admin");
   const loggedOwner = localStorage.getItem("owner");
 
   useEffect(() => {
-    fetchOrders();
+    // fetchOrders();
+    fetchAllOrders();
     fetchProducts();
-    fetchCategories();
+    fetchAllProducts();
+    // fetchCategories();
+    fetchAllCategories();
     fetchRetaurants();
+    fetchAllRetaurants();
     fetchUsers();
     fetchOwners();
 
@@ -175,15 +193,22 @@ function ProductDataProvider({ children }) {
   //   }
   // };
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (productsPage) => {
     setIsLoading(true);
     try {
       let url = `${process.env.REACT_APP_API_URL}/api/product${
         selectedCategory ? `/category/${selectedCategory}` : ""
-      }?page=1&limit=100`;
+      }?page=${productsPage}`;
+      // let url = `${process.env.REACT_APP_API_URL}/api/product${
+      //   selectedCategory
+      //     ? `/category/${selectedCategory}`
+      //     : `?page=${productsPage}`
+      // }`;
 
       const response = await axios.get(url);
+      const { totalPages } = response.data;
       setProducts(response.data.items);
+      setTotalProductsPages(totalPages);
       setIsLoading(false);
     } catch (e) {
       console.log(e);
@@ -191,13 +216,36 @@ function ProductDataProvider({ children }) {
     }
   };
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetchProducts();
-  //   }, 5000); // Polling interval of 5 seconds
+  const fetchAllProducts = async (page) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/product/all`
+      );
 
-  //   return () => clearInterval(interval); // Clean up the interval on component unmount
-  // }, []);
+      setAllProducts(response.data);
+      setIsLoading(false);
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts(productsPage);
+  }, [productsPage]);
+
+  const handleProductsPageChange = (event, newPage) => {
+    setProductsPage(newPage);
+  };
+
+  useEffect(() => {
+    fetchRetaurants(restaurantsPage);
+  }, [restaurantsPage]);
+
+  const handleRestaurantsPageChange = (event, newPage) => {
+    setRestaurantsPage(newPage);
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -211,13 +259,29 @@ function ProductDataProvider({ children }) {
     setSelectedCategory(null);
   };
 
-  const fetchCategories = async () => {
+  // const fetchCategories = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await axios.get(
+  //       `${process.env.REACT_APP_API_URL}/api/category?page=${page}`
+  //     );
+  //     const { totalPages } = response.data;
+  //     setCategories(response.data.items);
+  //     setTotalPages(totalPages);
+  //     setIsLoading(false);
+  //   } catch (e) {
+  //     console.log(e);
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const fetchAllCategories = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/category?page=1&limit=100`
+        `${process.env.REACT_APP_API_URL}/api/category/all`
       );
-      setCategories(response.data.items);
+      setAllCategories(response.data);
       setIsLoading(false);
     } catch (e) {
       console.log(e);
@@ -225,13 +289,29 @@ function ProductDataProvider({ children }) {
     }
   };
 
-  const fetchRetaurants = async () => {
+  const fetchRetaurants = async (restaurantsPage) => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/rest`
+        `${process.env.REACT_APP_API_URL}/api/rest?page=${restaurantsPage}`
       );
+      const { totalPages } = response.data;
       setRestaurants(response.data.items);
+      setRestaurantsPage(totalPages);
+      setIsLoading(false);
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+    }
+  };
+
+  const fetchAllRetaurants = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/rest/all`
+      );
+      setAllRestaurants(response.data);
       setIsLoading(false);
     } catch (e) {
       console.log(e);
@@ -360,13 +440,28 @@ function ProductDataProvider({ children }) {
     });
   };
 
-  const fetchOrders = async () => {
+  // const fetchOrders = async () => {
+  //   try {
+  //     if (orders.length === 0) {
+  //       const response = await axios.get(
+  //         `${process.env.REACT_APP_API_URL}/api/order?page=${page}`
+  //       );
+  //       const { totalPages } = response.data;
+  //       setOrders(response.data.items);
+  //       setTotalPages(totalPages);
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+
+  const fetchAllOrders = async () => {
     try {
       if (orders.length === 0) {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/order?page=1&limit=100`
+          `${process.env.REACT_APP_API_URL}/api/order/all`
         );
-        setOrders(response.data.items);
+        setAllOrders(response.data);
       }
     } catch (e) {
       console.log(e);
@@ -377,14 +472,23 @@ function ProductDataProvider({ children }) {
     <ProductDataContext.Provider
       value={{
         products,
+        allProducts,
+        handleProductsPageChange,
+        productsPage,
+        totalProductsPages,
         handleCategoryClick,
         handleGetAllProductsClick,
         selectedCategory,
         handleRestaurantClick,
         selectedRestaurant,
         categories,
-        fetchCategories,
+        // fetchCategories,
+        allCategories,
         restaurants,
+        restaurantsPage,
+        totalRestaurantsPages,
+        handleRestaurantsPageChange,
+        allRestaurants,
         deleteRestaurant,
         isLoading,
         cartItems,
@@ -406,7 +510,8 @@ function ProductDataProvider({ children }) {
         deleteOwner,
         updateOwner,
         orders,
-        fetchOrders,
+        allOrders,
+        // fetchOrders,
       }}
     >
       {children}

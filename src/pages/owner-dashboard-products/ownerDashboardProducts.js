@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 function OwnerDashboardProducts() {
-  const { restaurants, owner, products, categories, fetchProducts } =
+  const { restaurants, owner, allProducts, categories, fetchProducts } =
     useContext(ProductDataContext);
   const [restaurant, setRestaurant] = useState({});
   const [restoProducts, setRestoProducts] = useState([]);
@@ -235,16 +235,16 @@ function OwnerDashboardProducts() {
   }, [restaurant, restaurants, owner._id]);
 
   useEffect(() => {
-    const filteredProducts = products.filter(
+    const filteredProducts = allProducts.filter(
       (product) => product.restaurant_id._id === restaurant._id
     );
 
     if (filteredProducts.length > 0) {
       setRestoProducts(filteredProducts);
     }
-  }, [restaurant, products]);
+  }, [restaurant, allProducts]);
 
-  if (!products || !restaurant) {
+  if (!allProducts || !restaurant) {
     return (
       <div className="owner-dashboard-loading">
         <Spinner />

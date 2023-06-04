@@ -6,10 +6,18 @@ import RestaurantCard from "../../components/restaurant-card/restaurantCard";
 import { useNavigate } from "react-router-dom";
 import ProductCardSkeleton from "../../components/product-card-skeleton/productCardSkeleton";
 import CartContainer from "../../components/cart-container/cartContainer";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 function RestaurantPage() {
   const navigate = useNavigate();
-  const { restaurants, isLoading } = useContext(ProductDataContext);
+  const {
+    restaurants,
+    isLoading,
+    handleRestaurantsPageChange,
+    restaurantsPage,
+    totalRestaurantsPages,
+  } = useContext(ProductDataContext);
   return (
     <div className="restaurants-page">
       <ProductHeader />
@@ -33,6 +41,30 @@ function RestaurantPage() {
               />
             ))}
       </section>
+      <Stack
+        spacing={2}
+        mt={2}
+        direction="row"
+        justifyContent="center"
+        marginTop="2rem"
+      >
+        <Pagination
+          count={totalRestaurantsPages}
+          page={restaurantsPage}
+          onChange={handleRestaurantsPageChange}
+          shape="rounded"
+          sx={{
+            "& .MuiPaginationItem-root": {
+              color: "#222", // Replace 'your-color' with your desired color
+            },
+            "& .Mui-selected": {
+              color: "#fff", // Replace 'your-color' with your desired color
+              backgroundColor: "var(--accent-color)",
+              background: "var(-accent-color)",
+            },
+          }}
+        />
+      </Stack>
     </div>
   );
 }

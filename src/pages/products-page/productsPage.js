@@ -13,6 +13,8 @@ import SearchBar from "../../components/search-bar/SearchBar";
 import Header from "../../components/header/header";
 import emptyCart from "../../assets/images/cart-container-icon.svg";
 import CategoryCardSkeleton from "../../components/category-card-skeleton/categoryCardSkeleton";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 function ProductsPage() {
   const {
@@ -20,10 +22,14 @@ function ProductsPage() {
     isLoading,
     addToCart,
     addToCartPopup,
-    categories,
+    // categories,
+    allCategories,
     handleCategoryClick,
     handleGetAllProductsClick,
     selectedCategory,
+    handleProductsPageChange,
+    productsPage,
+    totalProductsPages,
   } = useContext(ProductDataContext);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isAdded, setIsAdded] = useState(false);
@@ -95,7 +101,7 @@ function ProductsPage() {
             alt="all products image"
             onClick={() => handleGetAllProductsClick()}
           />
-          {categories.map((cat) => (
+          {allCategories.map((cat) => (
             <CategoryCard
               className={`category-card ${
                 selectedCategory === cat._id ? "category-card-selected" : ""
@@ -107,7 +113,7 @@ function ProductsPage() {
               onClick={() => handleCategoryClick(cat._id)}
             />
           ))}
-          {categories.length === 0 &&
+          {allCategories.length === 0 &&
             Array.from({ length: 10 }).map((_, index) => (
               <CategoryCardSkeleton key={index} />
             ))}
@@ -144,6 +150,30 @@ function ProductsPage() {
             </div>
           )}
         </div>
+        <Stack
+          spacing={2}
+          mt={2}
+          direction="row"
+          justifyContent="center"
+          marginTop="2rem"
+        >
+          <Pagination
+            count={totalProductsPages}
+            page={productsPage}
+            onChange={handleProductsPageChange}
+            shape="rounded"
+            sx={{
+              "& .MuiPaginationItem-root": {
+                color: "#222", // Replace 'your-color' with your desired color
+              },
+              "& .Mui-selected": {
+                color: "#fff", // Replace 'your-color' with your desired color
+                backgroundColor: "var(--accent-color)",
+                background: "var(-accent-color)",
+              },
+            }}
+          />
+        </Stack>
       </main>
     </>
   );

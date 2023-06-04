@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 function HomePage() {
   const navigate = useNavigate();
-  const { products, addToCartPopup, isLoading } =
+  const { allProducts, addToCartPopup, isLoading } =
     useContext(ProductDataContext);
   const [countItems, setCountItems] = useState(1);
   const handleAddToCartPopup = (product) => {
@@ -26,7 +26,7 @@ function HomePage() {
     setSelectedProduct(product);
   };
 
-  const limitedProducts = products.slice(-3);
+  const limitedProducts = allProducts.slice(-3);
 
   const close = () => {
     document.querySelector(".cart-container").classList.toggle("close");
