@@ -58,6 +58,10 @@ function ProductDataProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    fetchOwners();
+  }, [owner]);
+
+  useEffect(() => {
     const loggedAdmin = localStorage.getItem("admin");
     if (loggedAdmin) {
       setAdmin(JSON.parse(loggedAdmin));

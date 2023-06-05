@@ -13,6 +13,7 @@ import DashboardPopup from "../../components/dashboard-popup/dashboardPopup";
 import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import PersonAddDisabledRoundedIcon from "@mui/icons-material/PersonAddDisabledRounded";
 import Tooltip from "@mui/material/Tooltip";
+import Spinner from "../../components/spinner/spinner";
 
 function AdminDashboardOwners() {
   const { owners, restaurants, deleteOwner, fetchOwners } =
@@ -89,6 +90,21 @@ function AdminDashboardOwners() {
       console.log(e);
     }
   };
+
+  if (!owners) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Spinner />
+      </div>
+    );
+  }
 
   const columns = [
     { field: "_id", headerName: "ID", width: 280 },

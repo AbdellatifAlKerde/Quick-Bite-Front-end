@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 function OwnerDashboardProducts() {
-  const { restaurants, owner, allProducts, categories, fetchProducts } =
+  const { restaurants, owner, allProducts, allCategories, fetchProducts } =
     useContext(ProductDataContext);
   const [restaurant, setRestaurant] = useState({});
   const [restoProducts, setRestoProducts] = useState([]);
@@ -53,60 +53,56 @@ function OwnerDashboardProducts() {
     setProductEditData({ ...productEditData, [event.target.name]: value });
   };
 
+  const triggerEdit = () => {
+    setIsEdit(true);
+  };
+
   const handleImageChange = (e) => {
     e.preventDefault();
     let image = e.target.files[0];
     setImage(image);
   };
 
-  const triggerEdit = () => {
-    setIsEdit(true);
-  };
-
   const addProduct = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // const productAddForm = new FormData();
-    // productAddForm.append("name", productAddData.name);
-    // productAddForm.append("description", productAddData.description);
-    // productAddForm.append("price", productAddData.price);
-    // productAddForm.append("category", productAddData.category._id);
-    // productAddForm.append("restaurant_id", restaurant._id);
-
     try {
-      const fd = new FormData();
-      fd.append("image", image, image.name);
+      let imageUrl = null;
+      if (Object.keys(image).length !== 0) {
+        const fd = new FormData();
+        fd.append("image", image);
 
-      const imgBBResponse = await axios.post(
-        `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_KEY}`,
-        fd
-      );
+        const imgBBResponse = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_KEY}`,
+          fd
+        );
 
-      const imageUrl = imgBBResponse.data.data.display_url;
+        imageUrl = imgBBResponse.data.data.display_url;
+      }
 
       const formData = new FormData();
-      formData.append("image", imageUrl);
+      if (imageUrl) {
+        formData.append("image", imageUrl);
+      }
       formData.append("name", productAddData.name);
       formData.append("description", productAddData.description);
       formData.append("price", productAddData.price);
-      // formData.append("category", productAddData.category._id);
       formData.append("category", productAddData.category);
       formData.append("restaurant_id", restaurant._id);
 
-      const formDt = {
-        image: imageUrl,
-        name: productAddData.name,
-        description: productAddData.description,
-        price: productAddData.price,
-        // category: productAddData.category._id,
-        category: productAddData.category,
-        restaurant_id: restaurant._id,
-      };
+      // const formDt = {
+      //   image: imageUrl,
+      //   name: productAddData.name,
+      //   description: productAddData.description,
+      //   price: productAddData.price,
+      //   category: productAddData.category,
+      //   restaurant_id: restaurant._id,
+      // };
 
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/product`,
-        formDt,
+        formData,
         {
           headers: {
             "content-type": "application/json",
@@ -130,7 +126,7 @@ function OwnerDashboardProducts() {
         error
       );
       console.log(e);
-      setError(e.response.data);
+      // setError(e.response.data);
       setIsSubmitting(false);
     }
   };
@@ -139,41 +135,46 @@ function OwnerDashboardProducts() {
     e.preventDefault();
 
     setIsSubmitting(true);
-    const fd = new FormData();
-    // fd.append("image", image, image.name);
-    fd.append("image", image);
-
-    const imgBBResponse = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_KEY}`,
-      fd
-    );
-
-    const imageUrl = imgBBResponse.data.data.display_url;
-
-    const productEditForm = new FormData();
-    productEditForm.append("name", productEditData.name);
-    productEditForm.append("image", imageUrl);
-    productEditForm.append("description", productEditData.description);
-    productEditForm.append("price", productEditData.price);
-    productEditForm.append("category", productEditData.category);
-    productEditForm.append("restaurant_id", restaurant._id);
-
-    const formDt = {
-      image: imageUrl,
-      name: productEditData.name,
-      description: productEditData.description,
-      price: productEditData.price,
-      category: productEditData.category,
-      restaurant_id: restaurant._id,
-    };
 
     try {
+      let imageUrl = null;
+      if (Object.keys(image).length !== 0) {
+        const fd = new FormData();
+        fd.append("image", image);
+
+        const imgBBResponse = await axios.post(
+          `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_KEY}`,
+          fd
+        );
+
+        imageUrl = imgBBResponse.data.data.display_url;
+      }
+
+      const formData = new FormData();
+      if (imageUrl) {
+        formData.append("image", imageUrl);
+      }
+      formData.append("name", productAddData.name);
+      formData.append("description", productAddData.description);
+      formData.append("price", productAddData.price);
+      formData.append("category", productAddData.category);
+      formData.append("restaurant_id", restaurant._id);
+
+      // const formDt = {
+      //   image: imageUrl,
+      //   name: productEditData.name,
+      //   description: productEditData.description,
+      //   price: productEditData.price,
+      //   category: productEditData.category,
+      //   restaurant_id: restaurant._id,
+      // };
+
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL}/api/product/${editId._id}`,
-        formDt,
+        formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "content-type": "application/json",
           },
         }
       );
@@ -189,7 +190,6 @@ function OwnerDashboardProducts() {
         category: "",
       });
       setError("");
-      // setError(response.data.message);
     } catch (e) {
       console.log(e);
       setError(e.response.data);
@@ -358,7 +358,6 @@ function OwnerDashboardProducts() {
 
   return (
     <div className="owner-dashboard-products">
-      {console.log(productEditData)}
       <div className="owner-dashboard-products-container">
         <DashboardHero
           image={productHero}
@@ -417,7 +416,7 @@ function OwnerDashboardProducts() {
                   name="name"
                   autoFocus={isEdit ? true : false}
                   onChange={isEdit ? handleEditChange : handleFormChange}
-                  // value={isEdit ? productEditData.name : productAddData.name}
+                  // value={isEdit && editId.name}
                   defaultValue={isEdit ? editId.name : ""}
                   required={true}
                   // placeholder={isEdit && editId.name}
@@ -429,11 +428,7 @@ function OwnerDashboardProducts() {
                   type="text"
                   name="description"
                   onChange={isEdit ? handleEditChange : handleFormChange}
-                  // value={
-                  //   isEdit
-                  //     ? productEditData.description
-                  //     : productAddData.description
-                  // }
+                  // value={isEdit && editId.description}
                   required={true}
                   defaultValue={isEdit ? editId.description : ""}
                   // placeholder={isEdit && editId.description}
@@ -449,7 +444,7 @@ function OwnerDashboardProducts() {
                   }}
                   name="price"
                   onChange={isEdit ? handleEditChange : handleFormChange}
-                  // value={isEdit ? productEditData.price : productAddData.price}
+                  // value={isEdit && editId.price}
                   required={true}
                   defaultValue={isEdit ? editId.price : ""}
                   // placeholder={isEdit && editId.price}
@@ -461,11 +456,8 @@ function OwnerDashboardProducts() {
                   <select
                     className="dashboard-admin-select"
                     name="category"
-                    value={
-                      isEdit
-                        ? productEditData.category
-                        : productAddData.category
-                    } // or formData.category.name
+                    // value={isEdit && editId.category._id}
+                    // or formData.category.name
                     // onChange={
                     //   isEdit
                     //     ? (e) =>
@@ -482,8 +474,8 @@ function OwnerDashboardProducts() {
                     onChange={isEdit ? handleEditChange : handleFormChange}
                     // defaultValue={editId && editId.category._id}
                   >
-                    {categories &&
-                      categories.map((category) => (
+                    {allCategories &&
+                      allCategories.map((category) => (
                         <option key={category._id} value={category._id}>
                           {category.name}
                         </option>
