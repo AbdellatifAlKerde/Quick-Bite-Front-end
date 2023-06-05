@@ -237,6 +237,7 @@ function ProductDataProvider({ children }) {
 
   const handleProductsPageChange = (event, newPage) => {
     setProductsPage(newPage);
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -245,6 +246,7 @@ function ProductDataProvider({ children }) {
 
   const handleRestaurantsPageChange = (event, newPage) => {
     setRestaurantsPage(newPage);
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {

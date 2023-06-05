@@ -169,7 +169,7 @@ function ProductsPage() {
               "& .Mui-selected": {
                 color: "#fff", // Replace 'your-color' with your desired color
                 backgroundColor: "var(--accent-color)",
-                background: "var(-accent-color)",
+                // background: "var(-accent-color)",
               },
             }}
           />
