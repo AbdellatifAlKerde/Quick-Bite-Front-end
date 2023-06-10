@@ -45,6 +45,7 @@ function HomePage() {
             setSelectedProduct(null);
             setCountItems(1);
           }}
+          onClickOutsideClose={() => setSelectedProduct(null)}
           onClickAddToCart={() => {
             handleAddToCartPopup(selectedProduct);
             close();

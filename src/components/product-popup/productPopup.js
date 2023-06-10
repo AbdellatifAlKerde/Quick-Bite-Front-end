@@ -8,7 +8,9 @@ function ProductPopup(props) {
   const { addToCart } = useContext(ProductDataContext);
 
   return (
-    <div className="overlay">
+    <>
+      <div className="overlay" onClick={props.onClickOutsideClose}></div>
+
       <div className="product-popup-container">
         <div className="product-popup-close-btn" onClick={props.onClickClose}>
           <CloseRoundedIcon />
@@ -41,7 +43,7 @@ function ProductPopup(props) {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

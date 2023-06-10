@@ -375,6 +375,32 @@ function OwnerDashboardProducts() {
           {openPopup && (
             <DashboardPopup
               title={isEdit ? "Edit Product" : "Add Product"}
+              onClickClose={
+                isEdit
+                  ? () => {
+                      setOpenPopup(false);
+                      setIsEdit(false);
+                      setProductEditData({
+                        name: "",
+                        description: "",
+                        price: "",
+                        category: "",
+                        image: null,
+                      });
+                      setError("");
+                    }
+                  : () => {
+                      setOpenPopup(false);
+                      setProductAddData({
+                        name: "",
+                        description: "",
+                        price: "",
+                        category: "",
+                        image: null,
+                      });
+                      setError("");
+                    }
+              }
               onClick={
                 isEdit
                   ? () => {

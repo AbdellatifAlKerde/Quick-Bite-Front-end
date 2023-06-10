@@ -25,14 +25,19 @@
 }
 
 .product-popup-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 70%;
   height: 70%;
   background-color: var(--primary-color);
   border-radius: var(--border-radius);
   padding: 2rem;
-  position: relative;
+  /* position: relative; */
   display: flex;
   column-gap: 2rem;
+  z-index: 9999;
 }
 
 .product-popup-img {

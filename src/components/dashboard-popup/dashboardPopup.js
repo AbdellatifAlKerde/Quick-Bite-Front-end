@@ -4,7 +4,11 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 function DashboardPopup(props) {
   return (
-    <div className="dashboard-popup-overlay">
+    <>
+      <div
+        className="dashboard-popup-overlay"
+        onClick={props.onClickClose}
+      ></div>
       <div className="dashboard-popup-body">
         <div className="dashboard-popup-title">
           <h2>{props.title}</h2>
@@ -16,7 +20,7 @@ function DashboardPopup(props) {
           {props.children}
         </form>
       </div>
-    </div>
+    </>
   );
 }
 
